@@ -45,3 +45,7 @@ export function useUser(): User {
 export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
 }
+
+export function isStrings(array: any[]): array is string[] {
+  return array.reduce((item) => typeof item === "string");
+}

@@ -14,15 +14,12 @@ export function createPoll({
   title,
   userId,
   options,
-}: Pick<Poll, "title" | "userId"> & { options: string[] }) {
+}: Pick<Poll, "title"> & { options: string[]; userId?: string }) {
+  console.log({ title, userId, options });
   return prisma.poll.create({
     data: {
       title,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
+      userId,
       options: {
         create: options.map((title) => ({
           title,
