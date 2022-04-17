@@ -4,14 +4,14 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function seed() {
-  const email = "rachel@remix.run";
+  const email = "test@example.com";
 
   // cleanup the existing database
   await prisma.user.delete({ where: { email } }).catch(() => {
     // no worries if it doesn't exist yet
   });
 
-  const hashedPassword = await bcrypt.hash("racheliscool", 10);
+  const hashedPassword = await bcrypt.hash("letmein", 10);
 
   const user = await prisma.user.create({
     data: {
@@ -24,21 +24,59 @@ async function seed() {
     },
   });
 
-  await prisma.note.create({
+  const poll = await prisma.poll.create({
     data: {
-      title: "My first note",
-      body: "Hello, world!",
+      title: "Do you like my first poll?",
       userId: user.id,
     },
   });
 
-  await prisma.note.create({
+  const optionYes = await prisma.option.create({
     data: {
-      title: "My second note",
-      body: "Hello, world!",
+      title: "Yes",
+      pollId: poll.id,
+    },
+  });
+
+  const optionNo = await prisma.option.create({
+    data: {
+      title: "No",
+      pollId: poll.id,
+    },
+  });
+
+  const optionMaybe = await prisma.option.create({
+    data: {
+      title: "Maybe",
+      pollId: poll.id,
+    },
+  });
+
+  await prisma.vote.create({
+    data: {
+      optionId: optionYes.id,
       userId: user.id,
     },
   });
+
+  await Promise.all(
+    new Array(100).fill(null).map(() => {
+      const ran = Math.random();
+      let optionId = "";
+      if (ran < 0.5) {
+        optionId = optionYes.id;
+      } else if (ran > 0.7) {
+        optionId = optionNo.id;
+      } else {
+        optionId = optionMaybe.id;
+      }
+      return prisma.vote.create({
+        data: {
+          optionId,
+        },
+      });
+    })
+  );
 
   console.log(`Database has been seeded. 🌱`);
 }
