@@ -15,7 +15,6 @@ export function createPoll({
   userId,
   options,
 }: Pick<Poll, "title"> & { options: string[]; userId?: string }) {
-  console.log({ title, userId, options });
   return prisma.poll.create({
     data: {
       title,
