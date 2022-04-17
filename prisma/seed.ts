@@ -31,6 +31,12 @@ async function seed() {
     },
   });
 
+  await prisma.poll.create({
+    data: {
+      title: "Empty poll",
+    },
+  });
+
   const optionYes = await prisma.option.create({
     data: {
       title: "Yes",
