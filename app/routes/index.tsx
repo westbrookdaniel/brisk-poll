@@ -6,7 +6,7 @@ import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { createPoll } from "~/models/poll.server";
 import { getUserId } from "~/session.server";
-import { Button } from "~/components/common/button";
+import { LinkButton } from "~/components/common/button";
 
 export interface ActionData {
   errors?: {
@@ -16,11 +16,7 @@ export interface ActionData {
 }
 
 function isValidOptions(array: any[]): array is string[] {
-  return array.reduce((a, b) => {
-    const isAValid = typeof a === "string" && a.length > 0;
-    const isBValid = typeof b === "string" && b.length > 0;
-    return isAValid && isBValid;
-  });
+  return array.every((item) => typeof item === "string" && item.length > 0);
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -70,12 +66,10 @@ export default function Index() {
             </>
           ) : (
             <>
-              <Link to="/login">
-                <Button variant="ghost">Login</Button>
-              </Link>
-              <Link to="/join">
-                <Button>Sign Up</Button>
-              </Link>
+              <LinkButton variant="ghost" to="/login">
+                Login
+              </LinkButton>
+              <LinkButton to="/join">Sign Up</LinkButton>
             </>
           )}
         </div>

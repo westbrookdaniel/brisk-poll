@@ -1,3 +1,5 @@
+import type { LinkProps } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import * as React from "react";
 import { transition } from "./styles";
 
@@ -33,6 +35,26 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
+      className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      {...props}
+    />
+  );
+};
+
+interface LinkButtonProps extends LinkProps {
+  size?: "sm" | "md" | "lg";
+  variant?: "block" | "ghost";
+}
+
+export const LinkButton: React.FC<LinkButtonProps> = ({
+  className = "",
+  size = "md",
+  variant = "block",
+  ...props
+}) => {
+  return (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
+    <Link
       className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       {...props}
     />
