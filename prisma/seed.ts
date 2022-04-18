@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function seed() {
-  const email = "westy12dan@gmail.com";
+  const email = "test@example.com";
 
   // Need to setup cleanup of existing database
 
