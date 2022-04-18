@@ -1,4 +1,4 @@
-import type { LinkProps } from "@remix-run/react";
+import { Form, LinkProps } from "@remix-run/react";
 import { Link } from "@remix-run/react";
 import * as React from "react";
 import { transition, withRing } from "./styles";
@@ -58,5 +58,27 @@ export const LinkButton: React.FC<LinkButtonProps> = ({
       className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       {...props}
     />
+  );
+};
+
+interface ActionButtonProps extends ButtonProps {
+  action: string;
+}
+
+export const ActionButton: React.FC<ActionButtonProps> = ({
+  className = "",
+  size = "md",
+  variant = "block",
+  action,
+  ...props
+}) => {
+  return (
+    <Form action={action} method="post">
+      <button
+        className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        type="submit"
+        {...props}
+      />
+    </Form>
   );
 };

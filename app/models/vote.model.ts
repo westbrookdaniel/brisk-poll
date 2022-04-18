@@ -16,17 +16,13 @@ export function createVote({
   });
 }
 
-export function getUserVote({
+export function getUserVotes({
   userId,
   pollId,
 }: Pick<Option, "pollId"> & { userId?: string }) {
   return prisma.vote.findMany({
     include: {
-      option: {
-        select: {
-          pollId: true,
-        },
-      },
+      option: true,
     },
     where: {
       userId,

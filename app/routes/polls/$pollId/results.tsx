@@ -9,17 +9,24 @@ import { useLoaderData, useParams } from "@remix-run/react";
 import ErrorHandler, { CatchHandler } from "~/components/ErrorHandler";
 import invariant from "tiny-invariant";
 import PollLink from "~/components/PollLink";
+import { getUserVotes } from "~/models/vote.model";
+import { getUserId } from "~/session.server";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
+  userVotes: Awaited<ReturnType<typeof getUserVotes>>;
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   const id = params.pollId;
   invariant(id, "pollId not found");
   const poll = await getPoll({ id });
   if (!poll) throw new Response("Poll Not Found", { status: 404 });
-  return json<LoaderData>({ poll });
+
+  const userId = await getUserId(request);
+  const userVotes = userId ? await getUserVotes({ userId, pollId: id }) : [];
+
+  return json<LoaderData>({ poll, userVotes });
 };
 
 export const meta: MetaFunction = ({ data }) => {
@@ -37,6 +44,7 @@ export const meta: MetaFunction = ({ data }) => {
 export default function PollResultsPage() {
   const data = useLoaderData() as LoaderData;
   const poll = data.poll!;
+  const userVotes = data.userVotes;
 
   const totalVotes = poll.options.reduce((total, option) => {
     total += option.votes.length;
@@ -69,9 +77,25 @@ export default function PollResultsPage() {
           );
         })}
       </div>
-      <p className="self-end text-sm text-gray-500">
-        There has been a total of {totalVotes}{" "}
-        {totalVotes === 1 ? "vote" : "votes"}
+      <p className="self-end text-sm text-gray-500 space-x-1">
+        {userVotes?.length > 0 ? (
+          <span>
+            You voted for{" "}
+            {userVotes.reduce((str, vote) => {
+              if (str.length === 0) {
+                str = vote.option.title;
+              } else {
+                str += `, ${vote.option.title}`;
+              }
+              return str;
+            }, "")}
+            .
+          </span>
+        ) : null}
+        <span>
+          There has been a total of {totalVotes}{" "}
+          {totalVotes === 1 ? "vote" : "votes"}.
+        </span>
       </p>
       <PollLink
         url={`${

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useOptionalUser } from "~/utils";
-import { LinkButton } from "./common/button";
+import { ActionButton, LinkButton } from "./common/button";
 import { withRing } from "./common/styles";
 
 export default function Header() {
@@ -19,8 +19,10 @@ export default function Header() {
       <div className="flex items-center justify-end flex-1 space-x-2">
         {user ? (
           <>
-            <p>Hello {user.email}</p>
-            <LinkButton to="/logout">Logout</LinkButton>
+            <p className="px-2 text-gray-500">{user.email}</p>
+            <ActionButton variant="ghost" action="/logout">
+              Logout
+            </ActionButton>
           </>
         ) : (
           <>

@@ -18,7 +18,7 @@ import ErrorHandler, { CatchHandler } from "~/components/ErrorHandler";
 import invariant from "tiny-invariant";
 import { FormError, FormRadio } from "~/components/common/form";
 import { Button } from "~/components/common/button";
-import { createVote, getUserVote } from "~/models/vote.model";
+import { createVote, getUserVotes } from "~/models/vote.model";
 import { getUserId } from "~/session.server";
 import PollLink from "~/components/PollLink";
 
@@ -33,8 +33,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   // Redirect to results if they have already voted
   const userId = await getUserId(request);
   if (userId) {
-    const vote = await getUserVote({ userId, pollId: id });
-    if (vote) return redirect(`/polls/${id}/results`);
+    const votes = await getUserVotes({ userId, pollId: id });
+    if (votes.length > 0) return redirect(`/polls/${id}/results`);
   }
 
   const poll = await getPoll({ id });
