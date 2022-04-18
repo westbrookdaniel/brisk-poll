@@ -38,3 +38,19 @@ export const Checkbox: React.FC<React.HTMLProps<HTMLInputElement>> = ({
     />
   );
 };
+
+export const Radio: React.FC<React.HTMLProps<HTMLInputElement>> = ({
+  className = "",
+  "aria-invalid": invalid,
+  ...props
+}) => {
+  return (
+    <input
+      className={`${block} ${withRing} ${
+        invalid ? manualBlockInvalid : "border-transparent"
+      } form-radio text-gray-900 accent-gray-900 ${className}`}
+      {...props}
+      type="radio"
+    />
+  );
+};

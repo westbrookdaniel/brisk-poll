@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Checkbox, Input } from "./input";
+import { Checkbox, Input, Radio } from "./input";
 
 interface Stylable {
   className?: string;
@@ -101,7 +101,7 @@ export const FormInput: React.FC<
 
 export const FormCheckbox: React.FC<
   FormElementsProps & React.HTMLProps<HTMLInputElement>
-> = ({ label, helper, error, name, ...props }) => {
+> = ({ label, helper, error, name, className, ...props }) => {
   return (
     <div className="space-x-2">
       <div className="flex items-center space-x-2">
@@ -113,10 +113,42 @@ export const FormCheckbox: React.FC<
           {...props}
         />
         {label || helper ? (
-          <FormLabel className="text-sm select-none" label={label} name={name} />
+          <FormLabel
+            className={`${className ? className : "text-sm"} select-none`}
+            label={label}
+            name={name}
+          />
         ) : null}
       </div>
       <FormError className="mt-2" error={error} name={name} />
+    </div>
+  );
+};
+
+export const FormRadio: React.FC<
+  FormElementsProps & React.HTMLProps<HTMLInputElement>
+> = ({ label, helper, error, name, value: v, className, ...props }) => {
+  const value = v as string;
+  return (
+    <div className="space-x-2">
+      <div className="flex items-center space-x-2">
+        <Radio
+          id={value}
+          name={name}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={`${name}-error`}
+          value={value}
+          {...props}
+        />
+        {label || helper ? (
+          <FormLabel
+            className={`${className ? className : "text-sm"} select-none`}
+            label={label}
+            name={value}
+          />
+        ) : null}
+      </div>
+      <FormError className="mt-2" error={error} name={value} />
     </div>
   );
 };

@@ -7,6 +7,11 @@ export type { Poll } from "@prisma/client";
 export function getPoll({ id }: Pick<Poll, "id">) {
   return prisma.poll.findFirst({
     where: { id },
+    include: {
+      options: {
+        include: { votes: true },
+      },
+    },
   });
 }
 
