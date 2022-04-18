@@ -31,12 +31,6 @@ async function seed() {
     },
   });
 
-  await prisma.poll.create({
-    data: {
-      title: "Empty poll",
-    },
-  });
-
   const optionYes = await prisma.option.create({
     data: {
       title: "Yes",
@@ -83,6 +77,26 @@ async function seed() {
       });
     })
   );
+
+  const emptyPoll = await prisma.poll.create({
+    data: {
+      title: "What is the best Juice?",
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      title: "Orange",
+      pollId: emptyPoll.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      title: "Apple",
+      pollId: emptyPoll.id,
+    },
+  });
 
   console.log(`Database has been seeded. 🌱`);
 }

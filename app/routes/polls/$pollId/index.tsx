@@ -1,3 +1,4 @@
+import * as React from "react";
 import type {
   ActionFunction,
   ErrorBoundaryComponent,
@@ -17,16 +18,25 @@ import ErrorHandler, { CatchHandler } from "~/components/ErrorHandler";
 import invariant from "tiny-invariant";
 import { FormError, FormRadio } from "~/components/common/form";
 import { Button } from "~/components/common/button";
-import { createVote } from "~/models/vote.model";
+import { createVote, getUserVote } from "~/models/vote.model";
 import { getUserId } from "~/session.server";
+import PollLink from "~/components/PollLink";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   const id = params.pollId;
   invariant(id, "pollId not found");
+
+  // Redirect to results if they have already voted
+  const userId = await getUserId(request);
+  if (userId) {
+    const vote = await getUserVote({ userId, pollId: id });
+    if (vote) return redirect(`/polls/${id}/results`);
+  }
+
   const poll = await getPoll({ id });
   if (!poll) throw new Response("Poll Not Found", { status: 404 });
   return json<LoaderData>({ poll });
@@ -74,6 +84,9 @@ export default function PollPage() {
   const data = useLoaderData() as LoaderData;
   const actionData = useActionData() as ActionData | undefined;
   const poll = data.poll!;
+
+  const [shared, setShared] = React.useState(false);
+
   return (
     <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32">
       <Form method="post" className="space-y-16">
@@ -93,9 +106,32 @@ export default function PollPage() {
           </div>
           <FormError name="option" error={actionData?.errors?.option} />
         </fieldset>
-        <Button type="submit" className="w-full">
-          Confirm Choice
-        </Button>
+        <div className="space-y-2">
+          <div className="flex w-full space-x-2">
+            <Button type="submit" className="flex-grow">
+              Confirm Choice
+            </Button>
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                setShared(true);
+              }}
+            >
+              {shared ? "Copied Link" : "Share Poll"}
+            </Button>
+          </div>
+          {shared ? (
+            <PollLink
+              url={
+                typeof window === "undefined"
+                  ? "Preparing link to poll"
+                  : window.location.href
+              }
+            />
+          ) : null}
+        </div>
       </Form>
     </main>
   );

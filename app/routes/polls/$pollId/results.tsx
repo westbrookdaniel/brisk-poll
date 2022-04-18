@@ -8,6 +8,7 @@ import { getPoll } from "~/models/poll.server";
 import { useLoaderData, useParams } from "@remix-run/react";
 import ErrorHandler, { CatchHandler } from "~/components/ErrorHandler";
 import invariant from "tiny-invariant";
+import PollLink from "~/components/PollLink";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -51,20 +52,34 @@ export default function PollResultsPage() {
           return (
             <div key={option.id} className="space-y-1">
               <p className="text-4xl font-bold">{option.title}</p>
-              <div className="flex items-center space-x-2">
-                <div
-                  style={{ width: `${(votes / totalVotes) * 100}%` }}
-                  className="h-4 bg-gray-400"
-                />
-                <span>{votes}</span>
-              </div>
+              {votes === 0 ? (
+                <div className="h-4">
+                  <span>No votes</span>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <div
+                    style={{ width: `${(votes / totalVotes) * 100}%` }}
+                    className="h-4 bg-gray-400"
+                  />
+                  <span>{votes}</span>
+                </div>
+              )}
             </div>
           );
         })}
       </div>
       <p className="self-end text-sm text-gray-500">
-        Total of {totalVotes} votes were made
+        There has been a total of {totalVotes}{" "}
+        {totalVotes === 1 ? "vote" : "votes"}
       </p>
+      <PollLink
+        url={`${
+          typeof window === "undefined"
+            ? "Preparing link to poll"
+            : window.location.origin
+        }/polls/${poll.id}`}
+      />
     </main>
   );
 }

@@ -18,8 +18,8 @@ const ghostActive = `active:bg-gray-200`;
 const ghostFocused = `focus-visible:outline-0 ${withRing}`;
 
 const variantStyles = {
-  block: `block bg-gray-900 text-white transition-all ${transition} ${blockActive} ${blockHovered} ${blockFocused}`,
-  ghost: `block bg-transparent transition-all ${transition} ${ghostActive} ${ghostHovered} ${ghostFocused}`,
+  block: `block select-none bg-gray-900 text-white transition-all ${transition} ${blockActive} ${blockHovered} ${blockFocused}`,
+  ghost: `block select-none bg-transparent transition-all ${transition} ${ghostActive} ${ghostHovered} ${ghostFocused}`,
 };
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
