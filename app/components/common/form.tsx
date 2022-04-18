@@ -39,7 +39,7 @@ export const FormHelper: React.FC<FormHelperProps> = ({
 interface FormErrorProps
   extends Stylable,
     Pick<React.HTMLProps<HTMLInputElement>, "name"> {
-  error?: string;
+  error?: string | boolean;
 }
 
 export const FormError: React.FC<FormErrorProps> = ({
@@ -47,7 +47,7 @@ export const FormError: React.FC<FormErrorProps> = ({
   name,
   className = "",
 }) => {
-  return error ? (
+  return typeof error === "string" ? (
     <p id={`${name}-error`} className={`text-sm text-red-700 ${className}`}>
       {error}
     </p>
@@ -68,10 +68,12 @@ export const FormElements: React.FC<FormElementsProps> = ({
 }) => {
   return (
     <div>
-      <div className="mb-2">
-        <FormLabel label={label} name={name} />
-        <FormHelper helper={helper} />
-      </div>
+      {label || helper ? (
+        <div className="mb-2">
+          <FormLabel label={label} name={name} />
+          <FormHelper helper={helper} />
+        </div>
+      ) : null}
       {children}
       <FormError className="mt-2" error={error} name={name} />
     </div>
