@@ -1,12 +1,12 @@
-import { Link } from "@remix-run/react";
-import CreatePollForm from "~/components/CreatePollForm";
-import { useOptionalUser } from "~/utils";
 import type { ActionFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { createPoll } from "~/models/poll.server";
 import { getUserId } from "~/session.server";
-import { LinkButton } from "~/components/common/button";
+import { useActionData, useTransition, Form } from "@remix-run/react";
+import React from "react";
+import { Button } from "~/components/common/button";
+import { FormInput, FormError } from "~/components/common/form";
 
 export interface ActionData {
   errors?: {
@@ -51,32 +51,55 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const user = useOptionalUser();
+  const actionData = useActionData() as ActionData | undefined;
+  const transition = useTransition();
+
+  const [optionCount, setOptionCount] = React.useState(2);
 
   return (
-    <div className="flex flex-col items-center max-w-6xl min-h-screen p-8 mx-auto m space-y-4">
-      <header className="flex items-center justify-between w-full">
-        <p className="flex-1">Logo</p>
-        <h1 className="text-xl font-bold">Brisk Poll</h1>
-        <div className="flex items-center justify-end flex-1 space-x-2">
-          {user ? (
-            <>
-              <p>Hello {user.email}</p>
-              <Link to="/logout">Logout</Link>
-            </>
-          ) : (
-            <>
-              <LinkButton variant="ghost" to="/login">
-                Login
-              </LinkButton>
-              <LinkButton to="/join">Sign Up</LinkButton>
-            </>
-          )}
-        </div>
-      </header>
-      <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32">
-        <CreatePollForm />
-      </main>
-    </div>
+    <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32">
+      <Form method="post">
+        <fieldset
+          className="space-y-4"
+          disabled={transition.state === "submitting"}
+        >
+          <FormInput
+            aria-label="Poll title"
+            placeholder="What is the title of your poll?"
+            name="title"
+            error={actionData?.errors?.title}
+          />
+
+          <fieldset className="flex flex-col space-y-2">
+            {new Array(optionCount).fill(null).map((_, i) => (
+              <FormInput
+                aria-label={`Option ${i + 1}`}
+                placeholder={`Label for option ${i + 1}`}
+                name="option"
+                // Autofocus on newly added options
+                autoFocus={optionCount > 0 ? optionCount === i + 1 : false}
+                error={!!actionData?.errors?.option}
+                key={i}
+              />
+            ))}
+            <FormError name="option" error={actionData?.errors?.option} />
+            <Button
+              type="button"
+              onClick={() => setOptionCount((o) => o + 1)}
+              variant="ghost"
+              className="self-end"
+            >
+              + Add Option
+            </Button>
+          </fieldset>
+
+          <Button type="submit" className="w-full">
+            {transition.state === "submitting"
+              ? "Creating Poll"
+              : "Create Poll"}
+          </Button>
+        </fieldset>
+      </Form>
+    </main>
   );
 }
