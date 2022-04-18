@@ -1,7 +1,7 @@
 import type { LinkProps } from "@remix-run/react";
 import { Link } from "@remix-run/react";
 import * as React from "react";
-import { transition } from "./styles";
+import { transition, withRing } from "./styles";
 
 const sizeStyles = {
   sm: `px-3 py-2 text-sm`,
@@ -11,11 +11,11 @@ const sizeStyles = {
 
 const blockHovered = `hover:bg-gray-700`;
 const blockActive = `active:bg-gray-500`;
-const blockFocused = `focus-visible:outline-0 focus:ring-gray-500 focus:ring-1 focus:ring-offset-2`;
+const blockFocused = `focus-visible:outline-0 ${withRing}`;
 
 const ghostHovered = `hover:bg-gray-100`;
 const ghostActive = `active:bg-gray-200`;
-const ghostFocused = `focus-visible:outline-0 focus:ring-gray-500 focus:ring-1 focus:ring-offset-2`;
+const ghostFocused = `focus-visible:outline-0 ${withRing}`;
 
 const variantStyles = {
   block: `block bg-gray-900 text-white transition-all ${transition} ${blockActive} ${blockHovered} ${blockFocused}`,

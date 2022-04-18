@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Input } from "./input";
+import { Checkbox, Input } from "./input";
 
 interface Stylable {
   className?: string;
@@ -91,11 +91,32 @@ export const FormInput: React.FC<
           name={name}
           aria-invalid={error ? true : undefined}
           aria-describedby={`${name}-error`}
-          {...props}
           className="w-full"
-          type="text"
+          {...props}
         />
       </p>
     </FormElements>
+  );
+};
+
+export const FormCheckbox: React.FC<
+  FormElementsProps & React.HTMLProps<HTMLInputElement>
+> = ({ label, helper, error, name, ...props }) => {
+  return (
+    <div className="space-x-2">
+      <div className="flex items-center space-x-2">
+        <Checkbox
+          id={name}
+          name={name}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={`${name}-error`}
+          {...props}
+        />
+        {label || helper ? (
+          <FormLabel className="text-sm select-none" label={label} name={name} />
+        ) : null}
+      </div>
+      <FormError className="mt-2" error={error} name={name} />
+    </div>
   );
 };
