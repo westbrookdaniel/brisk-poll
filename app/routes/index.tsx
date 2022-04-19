@@ -62,7 +62,8 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect(`/polls/${poll.id}`);
 };
 
-const initOptions = [generateId(), generateId()];
+// We need to provide a seed so this can be hydrated properly
+const initOptions = [generateId("foo"), generateId("bar")];
 
 export default function Index() {
   const actionData = useActionData() as ActionData | undefined;
