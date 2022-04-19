@@ -38,6 +38,9 @@ model Poll {
     userId String?
 
     options Option[]
+
+    requireAccount     Boolean @default(false)
+    allowMultipleVotes Boolean @default(false)
 }
 
 model Option {

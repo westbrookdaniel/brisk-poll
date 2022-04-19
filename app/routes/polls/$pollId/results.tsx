@@ -11,6 +11,7 @@ import invariant from "tiny-invariant";
 import PollLink from "~/components/PollLink";
 import { getUserVotes } from "~/models/vote.model";
 import { getUserId } from "~/session.server";
+import { LinkButton } from "~/components/common/button";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -51,6 +52,11 @@ export default function PollResultsPage() {
     return total;
   }, 0);
 
+  const pathToVote = `/polls/${poll.id}`;
+  const linkToVote = `${
+    typeof window === "undefined" ? "" : window.location.origin
+  }${pathToVote}`;
+
   return (
     <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32 space-y-8">
       <h1 className="text-lg">{poll.title}</h1>
@@ -77,33 +83,29 @@ export default function PollResultsPage() {
           );
         })}
       </div>
-      <p className="self-end text-sm text-gray-500 space-x-1">
+      <div className="text-sm text-right text-gray-500">
         {userVotes?.length > 0 ? (
-          <span>
-            You voted for{" "}
-            {userVotes.reduce((str, vote) => {
-              if (str.length === 0) {
-                str = vote.option.title;
-              } else {
-                str += `, ${vote.option.title}`;
-              }
-              return str;
-            }, "")}
+          <p>
+            You voted{" "}
+            {userVotes.length === 1
+              ? `for "${userVotes[0].option.title}"`
+              : `${userVotes.length} times`}
             .
-          </span>
+          </p>
         ) : null}
-        <span>
+        <p>
           There has been a total of {totalVotes}{" "}
           {totalVotes === 1 ? "vote" : "votes"}.
-        </span>
-      </p>
-      <PollLink
-        url={`${
-          typeof window === "undefined"
-            ? "Preparing link to poll"
-            : window.location.origin
-        }/polls/${poll.id}`}
-      />
+        </p>
+      </div>
+
+      {poll.allowMultipleVotes ? (
+        <LinkButton className="w-full" to={pathToVote}>
+          Vote Again
+        </LinkButton>
+      ) : null}
+
+      <PollLink url={linkToVote} />
     </main>
   );
 }

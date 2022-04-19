@@ -25,6 +25,7 @@
     "typecheck": "tsc -b && tsc -b cypress",
     "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
     "db:reset": "prisma migrate reset",
+    "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio"
   },

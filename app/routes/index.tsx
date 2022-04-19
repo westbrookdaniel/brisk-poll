@@ -6,7 +6,7 @@ import { getUserId } from "~/session.server";
 import { useActionData, useTransition, Form } from "@remix-run/react";
 import React from "react";
 import { Button, IconButton } from "~/components/common/button";
-import { FormInput, FormError } from "~/components/common/form";
+import { FormInput, FormError, FormCheckbox } from "~/components/common/form";
 import { generateId } from "~/utils";
 import { TrashIcon } from "@heroicons/react/solid";
 
@@ -25,6 +25,10 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const title = formData.get("title");
   const options = formData.getAll("option");
+  const requireAccount = formData.get("requireAccount");
+  const allowMultipleVotes = formData.get("allowMultipleVotes");
+
+  console.log(requireAccount, allowMultipleVotes);
 
   if (typeof title !== "string" || title.length === 0) {
     return json<ActionData>(
@@ -47,7 +51,13 @@ export const action: ActionFunction = async ({ request }) => {
 
   const userId = await getUserId(request);
 
-  const poll = await createPoll({ title, userId, options });
+  const poll = await createPoll({
+    title,
+    userId,
+    options,
+    requireAccount: requireAccount === "on" ? true : false,
+    allowMultipleVotes: allowMultipleVotes === "on" ? true : false,
+  });
 
   return redirect(`/polls/${poll.id}`);
 };
@@ -64,7 +74,7 @@ export default function Index() {
     <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32">
       <Form method="post">
         <fieldset
-          className="space-y-4"
+          className="space-y-6"
           disabled={transition.state === "submitting"}
         >
           <FormInput
@@ -74,7 +84,7 @@ export default function Index() {
             error={actionData?.errors?.title}
           />
 
-          <fieldset className="flex flex-col space-y-2">
+          <fieldset className="flex flex-col pb-4 space-y-2">
             {options.map((id, i) => (
               <div key={id} className="flex items-center space-x-2">
                 <FormInput
@@ -115,6 +125,13 @@ export default function Index() {
               ? "Creating Poll"
               : "Create Poll"}
           </Button>
+
+          <div className="space-y-2">
+            <FormCheckbox
+              name="allowMultipleVotes"
+              label="Allow multiple votes"
+            />
+          </div>
         </fieldset>
       </Form>
     </main>

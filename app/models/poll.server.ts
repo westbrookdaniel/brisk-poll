@@ -19,7 +19,12 @@ export function createPoll({
   title,
   userId,
   options,
-}: Pick<Poll, "title"> & { options: string[]; userId?: string }) {
+  requireAccount,
+  allowMultipleVotes,
+}: Pick<Poll, "title" | "requireAccount" | "allowMultipleVotes"> & {
+  options: string[];
+  userId?: string;
+}) {
   return prisma.poll.create({
     data: {
       title,
@@ -29,6 +34,8 @@ export function createPoll({
           title,
         })),
       },
+      requireAccount,
+      allowMultipleVotes,
     },
   });
 }

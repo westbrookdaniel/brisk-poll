@@ -32,16 +32,9 @@ interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
 }
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader: LoaderFunction = async ({ params }) => {
   const id = params.pollId;
   invariant(id, "pollId not found");
-
-  // Redirect to results if they have already voted
-  const userId = await getUserId(request);
-  if (userId) {
-    const votes = await getUserVotes({ userId, pollId: id });
-    if (votes.length > 0) return redirect(`/polls/${id}/results`);
-  }
 
   const poll = await getPoll({ id });
   if (!poll) throw new Response("Poll Not Found", { status: 404 });
@@ -70,19 +63,23 @@ export const action: ActionFunction = async ({ request, params }) => {
     );
   }
 
+  const poll = await getPoll({ id });
+  invariant(poll, "Poll not found");
+
   const userId = await getUserId(request);
 
-  // Check they haven't already voted
-  const signatureVotes = signature
-    ? await getSignatureVotes({ signature, pollId: id })
-    : [];
-  const userVotes = userId ? await getUserVotes({ userId, pollId: id }) : [];
+  if (!poll.allowMultipleVotes) {
+    const signatureVotes = signature
+      ? await getSignatureVotes({ signature, pollId: id })
+      : [];
+    const userVotes = userId ? await getUserVotes({ userId, pollId: id }) : [];
 
-  if (signatureVotes.length > 0 || userVotes.length > 0) {
-    return json<ActionData>(
-      { errors: { alreadyVoted: "You've already voted" } },
-      { status: 400 }
-    );
+    if (signatureVotes.length > 0 || userVotes.length > 0) {
+      return json<ActionData>(
+        { errors: { alreadyVoted: "You've already voted" } },
+        { status: 400 }
+      );
+    }
   }
 
   await createVote({ optionId: option, userId, request, signature });
