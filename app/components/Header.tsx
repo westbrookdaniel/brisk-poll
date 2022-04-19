@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@remix-run/react";
 import { useOptionalUser } from "~/utils";
 import { ActionButton, LinkButton } from "./common/button";
 import { withRing } from "./common/styles";

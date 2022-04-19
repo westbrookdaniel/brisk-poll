@@ -17,10 +17,16 @@ import {
 import ErrorHandler, { CatchHandler } from "~/components/ErrorHandler";
 import invariant from "tiny-invariant";
 import { FormError, FormRadio } from "~/components/common/form";
-import { Button } from "~/components/common/button";
-import { createVote, getUserVotes } from "~/models/vote.model";
+import { Button, LinkButton } from "~/components/common/button";
+import {
+  createVote,
+  getSignatureVotes,
+  getUserVotes,
+} from "~/models/vote.model";
 import { getUserId } from "~/session.server";
 import PollLink from "~/components/PollLink";
+import HiddenSignatureInput from "~/components/HiddenSignatureInput";
+import { Modal } from "~/components/common/modal";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -45,6 +51,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 interface ActionData {
   errors?: {
     option?: string;
+    alreadyVoted?: string;
   };
 }
 
@@ -53,6 +60,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(id, "pollId not found");
   const formData = await request.formData();
   const option = formData.get("option");
+  const signature = formData.get("signature");
+  invariant(typeof signature === "string", "Unexpected error occured");
 
   if (typeof option !== "string") {
     return json<ActionData>(
@@ -63,7 +72,20 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   const userId = await getUserId(request);
 
-  await createVote({ optionId: option, userId });
+  // Check they haven't already voted
+  const signatureVotes = signature
+    ? await getSignatureVotes({ signature, pollId: id })
+    : [];
+  const userVotes = userId ? await getUserVotes({ userId, pollId: id }) : [];
+
+  if (signatureVotes.length > 0 || userVotes.length > 0) {
+    return json<ActionData>(
+      { errors: { alreadyVoted: "You've already voted" } },
+      { status: 400 }
+    );
+  }
+
+  await createVote({ optionId: option, userId, request, signature });
 
   return redirect(`/polls/${id}/results`);
 };
@@ -80,7 +102,7 @@ export const meta: MetaFunction = ({ data }) => {
   };
 };
 
-export default function PollPage() {
+export default function VotingPage() {
   const data = useLoaderData() as LoaderData;
   const actionData = useActionData() as ActionData | undefined;
   const poll = data.poll!;
@@ -106,6 +128,17 @@ export default function PollPage() {
           </div>
           <FormError name="option" error={actionData?.errors?.option} />
         </fieldset>
+
+        <HiddenSignatureInput />
+        {actionData?.errors?.alreadyVoted ? (
+          <Modal
+            title={actionData?.errors?.alreadyVoted}
+            description="Why don't you check out the poll results instead"
+            body={<LinkButton to="results">View Poll Results</LinkButton>}
+            isOpen
+          />
+        ) : null}
+
         <div className="space-y-2">
           <div className="flex w-full space-x-2">
             <Button type="submit" className="flex-grow">

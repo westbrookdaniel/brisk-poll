@@ -4,9 +4,16 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function seed() {
+  const ipAddress = "192.0.2.1";
   const email = "test@example.com";
 
-  // Need to setup cleanup of existing database
+  // Cleanup of existing database
+  await prisma.user.deleteMany({ where: { email } }).catch(() => {
+    // No worries if it doesn't exist yet
+  });
+  await prisma.vote.deleteMany({ where: { ipAddress } }).catch(() => {
+    // No worries if it doesn't exist yet
+  });
 
   const hashedPassword = await bcrypt.hash("Z42pho7Jetrdv4", 10);
 
@@ -53,6 +60,7 @@ async function seed() {
     data: {
       optionId: optionYes.id,
       userId: user.id,
+      ipAddress,
     },
   });
 
@@ -70,6 +78,7 @@ async function seed() {
       return prisma.vote.create({
         data: {
           optionId,
+          ipAddress,
         },
       });
     })
