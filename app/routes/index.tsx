@@ -5,8 +5,10 @@ import { createPoll } from "~/models/poll.server";
 import { getUserId } from "~/session.server";
 import { useActionData, useTransition, Form } from "@remix-run/react";
 import React from "react";
-import { Button } from "~/components/common/button";
+import { Button, IconButton } from "~/components/common/button";
 import { FormInput, FormError } from "~/components/common/form";
+import { generateId } from "~/utils";
+import { TrashIcon } from "@heroicons/react/solid";
 
 export interface ActionData {
   errors?: {
@@ -50,11 +52,13 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect(`/polls/${poll.id}`);
 };
 
+const initOptions = [generateId(), generateId()];
+
 export default function Index() {
   const actionData = useActionData() as ActionData | undefined;
   const transition = useTransition();
 
-  const [optionCount, setOptionCount] = React.useState(2);
+  const [options, setOptions] = React.useState<string[]>(initOptions);
 
   return (
     <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32">
@@ -71,23 +75,36 @@ export default function Index() {
           />
 
           <fieldset className="flex flex-col space-y-2">
-            {new Array(optionCount).fill(null).map((_, i) => (
-              <FormInput
-                aria-label={`Option ${i + 1}`}
-                placeholder={`Label for option ${i + 1}`}
-                name="option"
-                // Autofocus on newly added options
-                autoFocus={optionCount > 0 ? optionCount === i + 1 : false}
-                error={!!actionData?.errors?.option}
-                key={i}
-              />
+            {options.map((id, i) => (
+              <div key={id} className="flex items-center space-x-2">
+                <FormInput
+                  containerProps={{ className: "flex-grow" }}
+                  aria-label={`Option ${id}`}
+                  placeholder={`Label for option ${i + 1}`}
+                  name="option"
+                  // Autofocus on newly added options
+                  autoFocus={
+                    options.length > 0 ? options.length === i + 1 : false
+                  }
+                  error={!!actionData?.errors?.option}
+                />
+                <IconButton
+                  type="button"
+                  variant="ghost"
+                  icon={TrashIcon}
+                  className="text-gray-500"
+                  onClick={() =>
+                    setOptions((opts) => opts.filter((o) => o !== id))
+                  }
+                />
+              </div>
             ))}
             <FormError name="option" error={actionData?.errors?.option} />
             <Button
               type="button"
-              onClick={() => setOptionCount((o) => o + 1)}
+              onClick={() => setOptions((opts) => [...opts, generateId()])}
               variant="ghost"
-              className="self-end"
+              className="self-start"
             >
               + Add Option
             </Button>

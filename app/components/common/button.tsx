@@ -1,4 +1,5 @@
-import { Form, LinkProps } from "@remix-run/react";
+import type { LinkProps } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import { Link } from "@remix-run/react";
 import * as React from "react";
 import { transition, withRing } from "./styles";
@@ -80,5 +81,23 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         {...props}
       />
     </Form>
+  );
+};
+
+interface IconButtonProps extends Omit<ButtonProps, "size"> {
+  // This is the type of the icons from @heroicons/react
+  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
+}
+
+export const IconButton: React.FC<IconButtonProps> = ({
+  className = "",
+  variant = "block",
+  icon: Icon,
+  ...props
+}) => {
+  return (
+    <button className={`${variantStyles[variant]} p-3 ${className}`} {...props}>
+      <Icon className="w-4 h-4" />
+    </button>
   );
 };

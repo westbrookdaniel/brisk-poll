@@ -57,7 +57,9 @@ export const FormError: React.FC<FormErrorProps> = ({
 interface FormElementsProps
   extends FormLabelProps,
     FormHelperProps,
-    FormErrorProps {}
+    FormErrorProps {
+  containerProps?: React.HTMLProps<HTMLDivElement>;
+}
 
 export const FormElements: React.FC<FormElementsProps> = ({
   children,
@@ -65,9 +67,10 @@ export const FormElements: React.FC<FormElementsProps> = ({
   error,
   label,
   name,
+  containerProps,
 }) => {
   return (
-    <div>
+    <div {...containerProps}>
       {label || helper ? (
         <div className="mb-2">
           <FormLabel label={label} name={name} />
@@ -82,9 +85,15 @@ export const FormElements: React.FC<FormElementsProps> = ({
 
 export const FormInput: React.FC<
   FormElementsProps & React.HTMLProps<HTMLInputElement>
-> = ({ label, helper, error, name, ...props }) => {
+> = ({ label, helper, error, containerProps, name, ...props }) => {
   return (
-    <FormElements helper={helper} error={error} label={label} name={name}>
+    <FormElements
+      containerProps={containerProps}
+      helper={helper}
+      error={error}
+      label={label}
+      name={name}
+    >
       <p>
         <Input
           id={name}

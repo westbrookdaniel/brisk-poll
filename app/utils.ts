@@ -1,5 +1,6 @@
 import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import type { User } from "~/models/user.server";
 
@@ -44,4 +45,8 @@ export function useUser(): User {
 
 export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
+}
+
+export function generateId(): string {
+  return uuidv4();
 }
