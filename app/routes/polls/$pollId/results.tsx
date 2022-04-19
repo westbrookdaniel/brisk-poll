@@ -12,6 +12,7 @@ import PollLink from "~/components/PollLink";
 import { getUserVotes } from "~/models/vote.model";
 import { getUserId } from "~/session.server";
 import { LinkButton } from "~/components/common/button";
+import { useHydrated } from "remix-utils";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -43,6 +44,7 @@ export const meta: MetaFunction = ({ data }) => {
 };
 
 export default function PollResultsPage() {
+  const hydrated = useHydrated();
   const data = useLoaderData() as LoaderData;
   const poll = data.poll!;
   const userVotes = data.userVotes;
@@ -53,9 +55,7 @@ export default function PollResultsPage() {
   }, 0);
 
   const pathToVote = `/polls/${poll.id}`;
-  const linkToVote = `${
-    typeof window === "undefined" ? "" : window.location.origin
-  }${pathToVote}`;
+  const linkToVote = `${hydrated ? window.location.origin : ""}${pathToVote}`;
 
   return (
     <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32 space-y-8">

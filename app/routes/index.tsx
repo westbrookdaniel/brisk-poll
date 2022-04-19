@@ -128,6 +128,10 @@ export default function Index() {
 
           <div className="space-y-2">
             <FormCheckbox
+              name="requireAccount"
+              label="Require account to vote"
+            />
+            <FormCheckbox
               name="allowMultipleVotes"
               label="Allow multiple votes"
             />

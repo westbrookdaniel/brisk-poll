@@ -23,21 +23,27 @@ import {
   getSignatureVotes,
   getUserVotes,
 } from "~/models/vote.model";
-import { getUserId } from "~/session.server";
+import { getUserId, requireUserId } from "~/session.server";
 import PollLink from "~/components/PollLink";
 import HiddenSignatureInput from "~/components/HiddenSignatureInput";
 import { Modal } from "~/components/common/modal";
+import { useHydrated } from "remix-utils";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   const id = params.pollId;
   invariant(id, "pollId not found");
 
   const poll = await getPoll({ id });
   if (!poll) throw new Response("Poll Not Found", { status: 404 });
+
+  if (poll.requireAccount) {
+    await requireUserId(request);
+  }
+
   return json<LoaderData>({ poll });
 };
 
@@ -100,6 +106,7 @@ export const meta: MetaFunction = ({ data }) => {
 };
 
 export default function VotingPage() {
+  const hydrated = useHydrated();
   const data = useLoaderData() as LoaderData;
   const actionData = useActionData() as ActionData | undefined;
   const poll = data.poll!;
@@ -154,11 +161,7 @@ export default function VotingPage() {
           </div>
           {shared ? (
             <PollLink
-              url={
-                typeof window === "undefined"
-                  ? "Preparing link to poll"
-                  : window.location.href
-              }
+              url={hydrated ? window.location.href : "Preparing link to poll"}
             />
           ) : null}
         </div>

@@ -88,7 +88,11 @@ export async function createUserSession({
 
 export async function logout(request: Request) {
   const session = await getSession(request);
-  return redirect("/", {
+
+  const searchParams = new URL(request.url).searchParams;
+  const redirectTo = searchParams.get("redirectTo") || "/";
+
+  return redirect(redirectTo, {
     headers: {
       "Set-Cookie": await sessionStorage.destroySession(session),
     },

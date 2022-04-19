@@ -80,7 +80,7 @@ export default function LoginPage() {
   const actionData = useActionData() as ActionData | undefined;
 
   return (
-    <main className="flex flex-col justify-center flex-grow w-full max-w-md pb-32">
+    <main className="flex flex-col justify-center flex-grow w-full max-w-md pb-32 space-y-16">
       <Form method="post" className="space-y-6">
         <FormInput
           label="Email address"

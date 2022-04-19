@@ -7,6 +7,7 @@ export const action: ActionFunction = async ({ request }) => {
   return logout(request);
 };
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  // Logging out and redirecting is done in the action above
   return redirect("/");
 };
