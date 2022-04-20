@@ -25,81 +25,89 @@ const variantStyles = {
   ghost: `${common} bg-transparent transition-all ${transition} ${ghostActive} ${ghostHovered} ${ghostFocused}`,
 };
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "sm" | "md" | "lg";
   variant?: "block" | "ghost";
 }
 
-export const Button: React.FC<ButtonProps> = ({
-  className = "",
-  size = "md",
-  variant = "block",
-  ...props
-}) => {
-  return (
-    <button
-      className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
-      {...props}
-    />
-  );
-};
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    { className = "", size = "md", variant = "block", ...props },
+    ref
+  ) {
+    return (
+      <button
+        className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
 
 interface LinkButtonProps extends LinkProps {
   size?: "sm" | "md" | "lg";
   variant?: "block" | "ghost";
 }
 
-export const LinkButton: React.FC<LinkButtonProps> = ({
-  className = "",
-  size = "md",
-  variant = "block",
-  ...props
-}) => {
-  return (
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
-    <Link
-      className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
-      {...props}
-    />
-  );
-};
+export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
+  function LinkButton(
+    { className = "", size = "md", variant = "block", ...props },
+    ref
+  ) {
+    return (
+      // eslint-disable-next-line jsx-a11y/anchor-has-content
+      <Link
+        className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
 
 interface ActionButtonProps extends ButtonProps {
   action: string;
 }
 
-export const ActionButton: React.FC<ActionButtonProps> = ({
-  className = "",
-  size = "md",
-  variant = "block",
-  action,
-  ...props
-}) => {
+export const ActionButton = React.forwardRef<
+  HTMLButtonElement,
+  ActionButtonProps
+>(function ActionButton(
+  { className = "", size = "md", variant = "block", action, ...props },
+  ref
+) {
   return (
     <Form action={action} method="post">
       <button
         className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
         type="submit"
+        ref={ref}
         {...props}
       />
     </Form>
   );
-};
+});
 
 interface IconButtonProps extends Omit<ButtonProps, "size"> {
   // This is the type of the icons from @heroicons/react
   icon: (props: React.ComponentProps<"svg">) => JSX.Element;
 }
 
-export const IconButton: React.FC<IconButtonProps> = ({
-  className = "",
-  variant = "block",
-  icon: Icon,
-  ...props
-}) => {
-  return (
-    <button className={`${variantStyles[variant]} p-3 ${className}`} {...props}>
-      <Icon className="w-4 h-4" />
-    </button>
-  );
-};
+export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+  function IconButton(
+    { className = "", variant = "block", icon: Icon, ...props },
+    ref
+  ) {
+    return (
+      <button
+        className={`${variantStyles[variant]} p-3 ${className}`}
+        ref={ref}
+        {...props}
+      >
+        <Icon className="w-4 h-4" />
+      </button>
+    );
+  }
+);
