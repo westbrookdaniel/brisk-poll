@@ -1,7 +1,9 @@
+import { MenuIcon } from "@heroicons/react/solid";
 import { Link } from "@remix-run/react";
 import { useHydrated } from "remix-utils";
 import { useOptionalUser } from "~/utils";
-import { ActionButton, LinkButton } from "./common/button";
+import { ActionButton, IconButton, LinkButton } from "./common/button";
+import Menu, { MenuItem, MenuItems } from "./common/menu";
 import { withRing } from "./common/styles";
 
 export default function Header() {
@@ -35,12 +37,37 @@ export default function Header() {
           </>
         ) : (
           <>
-            <LinkButton variant="ghost" to={`/login?${redirectSearchParams}`}>
+            <LinkButton
+              className="hidden md:block"
+              variant="ghost"
+              to={`/login?${redirectSearchParams}`}
+            >
               Login
             </LinkButton>
-            <LinkButton to={`/join?${redirectSearchParams}`}>
+            <LinkButton
+              className="hidden md:block"
+              to={`/join?${redirectSearchParams}`}
+            >
               Sign Up
             </LinkButton>
+            <Menu
+              body={
+                <MenuItems className="w-[150px]">
+                  <Link to={`/login?${redirectSearchParams}`}>
+                    <MenuItem>Login</MenuItem>
+                  </Link>
+                  <Link to={`/join?${redirectSearchParams}`}>
+                    <MenuItem>Sign Up</MenuItem>
+                  </Link>
+                </MenuItems>
+              }
+              buttonProps={{
+                as: IconButton,
+                icon: MenuIcon,
+                variant: "ghost",
+              }}
+              className="block md:hidden"
+            />
           </>
         )}
       </div>
