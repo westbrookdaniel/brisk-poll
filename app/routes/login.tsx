@@ -45,12 +45,6 @@ export const action: ActionFunction = async ({ request }) => {
       { status: 400 }
     );
   }
-  if (password.length < 8) {
-    return json<ActionData>(
-      { errors: { password: "Password is too short" } },
-      { status: 400 }
-    );
-  }
 
   const user = await verifyLogin(email, password);
 

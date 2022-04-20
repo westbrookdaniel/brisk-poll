@@ -12,7 +12,7 @@ interface Props {
   className?: string;
 }
 
-export default function Menu({
+export function Menu({
   children,
   body,
   buttonProps = {},
@@ -44,19 +44,27 @@ interface MenuItemProps {
   children: React.ReactNode | ((active: boolean) => React.ReactNode);
 }
 
-export function MenuItem({ children, ...props }: MenuItemProps) {
+export function MenuItem({ children }: MenuItemProps) {
   return (
-    <HeadlessMenu.Item {...props}>
+    <HeadlessMenu.Item>
       {({ active }) => (
         <button
           className={`${
             active ? "bg-gray-200" : "text-gray-900"
-          } group flex w-full items-center px-4 py-2`}
+          } flex w-full items-center px-4 py-2`}
         >
           {typeof children === "function" ? children(active) : children}
         </button>
       )}
     </HeadlessMenu.Item>
+  );
+}
+
+export function MenuSlot({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center w-full px-4 py-2">
+      {children}
+    </div>
   );
 }
 
