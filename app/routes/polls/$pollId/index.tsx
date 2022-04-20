@@ -160,7 +160,7 @@ export default function VotingPage() {
         ) : null}
 
         <div className="space-y-2">
-          <div className="flex w-full space-x-2">
+          <div className="flex flex-col w-full space-y-2 md:flex-row md:space-y-0 md:space-x-2">
             <Button type="submit" className="flex-grow">
               Confirm Choice
             </Button>
