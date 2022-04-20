@@ -9,6 +9,7 @@
     "build": "run-s build:*",
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
+    "build:server": "tsc --project tsconfig.server.json --outDir build/server/",
     "dev": "run-p dev:*",
     "dev:css": "npm run generate:css -- --watch",
     "dev:watch": "cross-env NODE_ENV=development binode -- @remix-run/dev:remix watch",
@@ -17,7 +18,7 @@
     "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma migrate dev && prisma db seed",
-    "start": "cross-env NODE_ENV=production ts-node server/index.ts",
+    "start": "cross-env NODE_ENV=production node build/server/index.js",
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"cypress open\"",
     "pretest:e2e:run": "npm run build",
@@ -55,8 +56,7 @@
     "socket.io-client": "^4.4.1",
     "tiny-invariant": "^1.2.0",
     "uuid": "^8.3.2",
-    "cross-env": "^7.0.3",
-    "ts-node": "^10.7.0"
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.1.2",
@@ -81,6 +81,7 @@
     "autoprefixer": "^10.4.4",
     "binode": "^1.0.5",
     "c8": "^7.11.0",
+    "ts-node": "^10.7.0",
     "cypress": "^9.5.4",
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",

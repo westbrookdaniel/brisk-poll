@@ -12,7 +12,7 @@ import { createRequestHandler } from "@remix-run/express";
 import onVote from "./onVote";
 
 const MODE = process.env.NODE_ENV;
-const BUILD_DIR = path.join(process.cwd(), "build");
+const BUILD_DIR = path.join(process.cwd(), "../");
 
 if (!fs.existsSync(BUILD_DIR)) {
   console.warn(
@@ -49,10 +49,10 @@ app.use(morgan("tiny"));
 app.all(
   "*",
   MODE === "production"
-    ? createRequestHandler({ build: require("../build") })
+    ? createRequestHandler({ build: require("../") })
     : (req, res, next) => {
         purgeRequireCache();
-        const build = require("../build");
+        const build = require("../");
         return createRequestHandler({ build, mode: MODE })(req, res, next);
       }
 );
