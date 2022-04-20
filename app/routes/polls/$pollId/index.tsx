@@ -29,7 +29,7 @@ import HiddenSignatureInput from "~/components/HiddenSignatureInput";
 import { Modal } from "~/components/common/modal";
 import { useHydrated } from "remix-utils";
 import { useEmit } from "~/sockets";
-import type { EmittedVote } from "server/votes";
+import type { EmittedVote } from "server/onVote";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;

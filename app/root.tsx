@@ -20,7 +20,6 @@ import ErrorHandler from "./components/ErrorHandler";
 import type { Socket } from "socket.io-client";
 import io from "socket.io-client";
 import { SocketProvider } from "./context";
-import { useListen } from "./sockets";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
