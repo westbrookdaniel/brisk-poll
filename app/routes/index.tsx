@@ -28,8 +28,6 @@ export const action: ActionFunction = async ({ request }) => {
   const requireAccount = formData.get("requireAccount");
   const allowMultipleVotes = formData.get("allowMultipleVotes");
 
-  console.log(requireAccount, allowMultipleVotes);
-
   if (typeof title !== "string" || title.length === 0) {
     return json<ActionData>(
       { errors: { title: "Title is required" } },

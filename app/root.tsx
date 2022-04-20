@@ -1,3 +1,4 @@
+import * as React from "react";
 import type {
   LinksFunction,
   LoaderFunction,
@@ -12,11 +13,14 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 import Header from "./components/Header";
 import ErrorHandler from "./components/ErrorHandler";
+import type { Socket } from "socket.io-client";
+import io from "socket.io-client";
+import { SocketProvider } from "./context";
+import { useListen } from "./sockets";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -63,10 +67,28 @@ function Document({
 }
 
 export default function App() {
+  const [socket, setSocket] = React.useState<Socket>();
+
+  React.useEffect(() => {
+    const socket = io();
+    setSocket(socket);
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  // We can't use useListen here because we aren't inside the SocketProvider
+  React.useEffect(() => {
+    if (!socket) return;
+    socket.on("confirmation", () => console.debug("connected!"));
+  }, [socket]);
+
   return (
     <Document>
       <Header />
-      <Outlet />
+      <SocketProvider socket={socket}>
+        <Outlet />
+      </SocketProvider>
     </Document>
   );
 }
