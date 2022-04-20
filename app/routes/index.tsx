@@ -81,6 +81,8 @@ export default function Index() {
             placeholder="What is the title of your poll?"
             name="title"
             error={actionData?.errors?.title}
+            // Autofocus here first
+            autoFocus
           />
 
           <fieldset className="flex flex-col pb-4 space-y-2">
@@ -91,7 +93,7 @@ export default function Index() {
                   aria-label={`Option ${id}`}
                   placeholder={`Label for option ${i + 1}`}
                   name="option"
-                  // Autofocus on newly added options
+                  // and then autofocus on newly added options
                   autoFocus={
                     options.length > 0 ? options.length === i + 1 : false
                   }
