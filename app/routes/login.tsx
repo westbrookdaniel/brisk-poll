@@ -11,6 +11,7 @@ import { validateEmail } from "~/utils";
 import { FormCheckbox, FormInput } from "~/components/common/form";
 import { Button } from "~/components/common/button";
 import { link } from "~/components/common/styles";
+import Layout from "~/components/Layout";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
@@ -80,7 +81,7 @@ export default function LoginPage() {
   const actionData = useActionData() as ActionData | undefined;
 
   return (
-    <main className="flex flex-col justify-center flex-grow w-full max-w-md pb-32 space-y-16">
+    <Layout>
       <Form method="post" className="space-y-6">
         <FormInput
           label="Email address"
@@ -119,6 +120,6 @@ export default function LoginPage() {
           </span>
         </div>
       </Form>
-    </main>
+    </Layout>
   );
 }

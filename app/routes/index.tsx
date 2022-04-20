@@ -9,6 +9,7 @@ import { Button, IconButton } from "~/components/common/button";
 import { FormInput, FormError, FormCheckbox } from "~/components/common/form";
 import { generateId } from "~/utils";
 import { TrashIcon } from "@heroicons/react/solid";
+import Layout from "~/components/Layout";
 
 export interface ActionData {
   errors?: {
@@ -70,7 +71,7 @@ export default function Index() {
   const [options, setOptions] = React.useState<string[]>(initOptions);
 
   return (
-    <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32">
+    <Layout>
       <Form method="post">
         <fieldset
           className="space-y-6"
@@ -139,6 +140,6 @@ export default function Index() {
           </div>
         </fieldset>
       </Form>
-    </main>
+    </Layout>
   );
 }

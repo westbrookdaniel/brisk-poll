@@ -16,6 +16,7 @@ import { LinkButton } from "~/components/common/button";
 import { useHydrated } from "remix-utils";
 import { useListen } from "~/sockets";
 import type { Option, Vote } from "@prisma/client";
+import Layout from "~/components/Layout";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -59,44 +60,48 @@ export default function PollResultsPage() {
   const linkToVote = `${hydrated ? window.location.origin : ""}${pathToVote}`;
 
   return (
-    <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32 space-y-8">
-      <h1 className="text-lg">{poll.title}</h1>
-      <div className="space-y-6">
-        {poll.options.map((option) => {
-          return (
-            <OptionVotes
-              key={option.id}
-              totalVotes={totalVotes}
-              option={option}
-              onNewVote={() => setNewVotes((v) => v + 1)}
-            />
-          );
-        })}
+    <Layout>
+      <div className="space-y-8">
+        <h1 className="text-lg">{poll.title}</h1>
+        <div className="space-y-6">
+          {poll.options.map((option) => {
+            return (
+              <OptionVotes
+                key={option.id}
+                totalVotes={totalVotes}
+                option={option}
+                onNewVote={() => setNewVotes((v) => v + 1)}
+              />
+            );
+          })}
+        </div>
       </div>
-      <div className="text-sm text-right text-gray-500">
-        {userVotes?.length > 0 ? (
+      <div className="space-y-4">
+        <div className="text-sm text-right text-gray-500">
+          {userVotes?.length > 0 ? (
+            <p>
+              You voted{" "}
+              {userVotes.length === 1
+                ? `for "${userVotes[0].option.title}"`
+                : `${userVotes.length} times`}
+              .
+            </p>
+          ) : null}
           <p>
-            You voted{" "}
-            {userVotes.length === 1
-              ? `for "${userVotes[0].option.title}"`
-              : `${userVotes.length} times`}
-            .
+            There has been a total of {totalVotes}{" "}
+            {totalVotes === 1 ? "vote" : "votes"}.
           </p>
+        </div>
+
+        {poll.allowMultipleVotes ? (
+          <LinkButton className="w-full" to={pathToVote}>
+            Vote Again
+          </LinkButton>
         ) : null}
-        <p>
-          There has been a total of {totalVotes}{" "}
-          {totalVotes === 1 ? "vote" : "votes"}.
-        </p>
+
+        <PollLink url={linkToVote} />
       </div>
-
-      {poll.allowMultipleVotes ? (
-        <LinkButton className="w-full" to={pathToVote}>
-          Vote Again
-        </LinkButton>
-      ) : null}
-
-      <PollLink url={linkToVote} />
-    </main>
+    </Layout>
   );
 }
 

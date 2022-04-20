@@ -30,6 +30,7 @@ import { Modal } from "~/components/common/modal";
 import { useHydrated } from "remix-utils";
 import { useEmit } from "~/sockets";
 import type { EmittedVote } from "server/onVote";
+import Layout from "~/components/Layout";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -130,7 +131,7 @@ export default function VotingPage() {
   }, [emit, fetcher.data?.vote, fetcher.type, navigate]);
 
   return (
-    <main className="flex flex-col justify-center flex-grow w-full max-w-lg pb-32">
+    <Layout>
       <fetcher.Form method="post" className="space-y-16">
         <fieldset className="space-y-8">
           <legend className="text-lg">{poll.title}</legend>
@@ -182,7 +183,7 @@ export default function VotingPage() {
           ) : null}
         </div>
       </fetcher.Form>
-    </main>
+    </Layout>
   );
 }
 
