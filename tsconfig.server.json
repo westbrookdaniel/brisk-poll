@@ -14,7 +14,7 @@
       "~/*": ["./app/*"]
     },
     "skipLibCheck": true,
-
+    "outDir": "build/server/",
     "noEmit": false
   }
 }
