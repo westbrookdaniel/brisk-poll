@@ -104,7 +104,6 @@ export default function Index() {
                   type="button"
                   variant="ghost"
                   icon={TrashIcon}
-                  className="text-gray-500"
                   onClick={() =>
                     setOptions((opts) => opts.filter((o) => o !== id))
                   }
@@ -122,7 +121,7 @@ export default function Index() {
             </Button>
           </fieldset>
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" colorScheme="blue">
             {transition.state === "submitting"
               ? "Creating Poll"
               : "Create Poll"}

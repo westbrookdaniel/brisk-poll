@@ -37,10 +37,10 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
 export const meta: MetaFunction = ({ data }) => {
   if (!data) {
-    return { title: "Poll not found" };
+    return { title: "Page not found | Brisk Poll" };
   }
   const { poll } = data as LoaderData;
-  return { title: poll?.title };
+  return { title: `${poll?.title} | Brisk Poll` };
 };
 
 export default function PollResultsPage() {
@@ -62,7 +62,7 @@ export default function PollResultsPage() {
   return (
     <Layout>
       <div className="space-y-8">
-        <h1 className="text-lg">{poll.title}</h1>
+        <h1 className="font-normal text-md">{poll.title}</h1>
         <div className="space-y-6">
           {poll.options.map((option) => {
             return (
@@ -94,7 +94,7 @@ export default function PollResultsPage() {
         </div>
 
         {poll.allowMultipleVotes ? (
-          <LinkButton className="w-full" to={pathToVote}>
+          <LinkButton colorScheme="blue" className="w-full" to={pathToVote}>
             Vote Again
           </LinkButton>
         ) : null}
@@ -124,7 +124,7 @@ function OptionVotes({ option, totalVotes, onNewVote }: OptionProps) {
 
   return (
     <div key={option.id} className="space-y-1">
-      <p className="text-4xl font-bold">{option.title}</p>
+      <p className="text-4xl font-semibold text-blue-600">{option.title}</p>
       {votes === 0 ? (
         <div className="h-4">
           <span>No votes</span>
@@ -133,9 +133,9 @@ function OptionVotes({ option, totalVotes, onNewVote }: OptionProps) {
         <div className="flex items-center space-x-2">
           <div
             style={{ width: `${(votes / totalVotes) * 100}%` }}
-            className="h-4 bg-gray-400"
+            className="h-4 bg-blue-200 rounded-full"
           />
-          <span>{votes}</span>
+          <span className="text-blue-600">{votes}</span>
         </div>
       )}
     </div>

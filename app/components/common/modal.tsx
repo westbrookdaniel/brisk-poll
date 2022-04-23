@@ -38,7 +38,7 @@ export function Modal({
           className="fixed inset-0 z-10 overflow-y-auto"
           onClose={closeModal}
         >
-          <div className="flex items-center justify-center min-h-screen px-4 ">
+          <div className="flex items-center justify-center min-h-screen px-4">
             <Transition.Child
               as={React.Fragment}
               enter="ease-out duration-300"
@@ -48,7 +48,7 @@ export function Modal({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-gray-900/75" />
+              <Dialog.Overlay className="fixed inset-0 bg-gray-900/80" />
             </Transition.Child>
             <Transition.Child
               as={React.Fragment}
@@ -59,11 +59,11 @@ export function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="flex flex-col items-start w-full max-w-md p-6 my-8 overflow-hidden text-left bg-white shadow-xl transform space-y-4 transition-all">
+              <div className="flex flex-col items-start w-full max-w-md p-6 my-8 overflow-hidden text-left bg-white rounded-lg shadow-xl transform space-y-4 transition-all">
                 <div className="space-y-1">
                   <Dialog.Title
                     as="h3"
-                    className="text-xl font-bold text-gray-900 leading-6"
+                    className="text-xl leading-6"
                   >
                     {title}
                   </Dialog.Title>

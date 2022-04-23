@@ -10,35 +10,45 @@ const sizeStyles = {
   lg: `px-6 py-3 text-lg`,
 };
 
-const blockHovered = `hover:bg-gray-700`;
-const blockActive = `active:bg-gray-500`;
-const blockFocused = `focus-visible:outline-0 ${withRing}`;
-
-const ghostHovered = `hover:bg-gray-100`;
-const ghostActive = `active:bg-gray-200`;
-const ghostFocused = `focus-visible:outline-0 ${withRing}`;
-
-const common = `block text-center select-none`;
-
 const variantStyles = {
-  block: `${common} bg-gray-900 text-white transition-all ${transition} ${blockActive} ${blockHovered} ${blockFocused}`,
-  ghost: `${common} bg-transparent transition-all ${transition} ${ghostActive} ${ghostHovered} ${ghostFocused}`,
+  block: {
+    blue: `text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800`,
+    red: `text-white bg-red-500 hover:bg-red-600 active:bg-red-700`,
+    gray: `text-white bg-gray-900 hover:bg-gray-700 active:bg-gray-500`,
+  },
+  ghost: {
+    blue: `bg-transparent text-blue-700 hover:bg-blue-100 active:bg-blue-200`,
+    red: `bg-transparent text-red-600 hover:bg-red-100 active:bg-red-200`,
+    gray: `bg-transparent hover:bg-gray-100 active:bg-gray-200`,
+  },
 };
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+const common = `block rounded-lg text-center select-none font-medium focus-visible:outline-0 ${withRing}`;
+
+interface DefaultProps {
   size?: "sm" | "md" | "lg";
   variant?: "block" | "ghost";
+  colorScheme?: "blue" | "red" | "gray";
 }
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    DefaultProps {}
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
-    { className = "", size = "md", variant = "block", ...props },
+    {
+      className = "",
+      size = "md",
+      variant = "block",
+      colorScheme = "gray",
+      ...props
+    },
     ref
   ) {
     return (
       <button
-        className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        className={`${common} transition-all ${transition} ${variantStyles[variant][colorScheme]} ${sizeStyles[size]} ${className}`}
         ref={ref}
         {...props}
       />
@@ -46,20 +56,23 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-interface LinkButtonProps extends LinkProps {
-  size?: "sm" | "md" | "lg";
-  variant?: "block" | "ghost";
-}
+interface LinkButtonProps extends LinkProps, DefaultProps {}
 
 export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
   function LinkButton(
-    { className = "", size = "md", variant = "block", ...props },
+    {
+      className = "",
+      size = "md",
+      variant = "block",
+      colorScheme = "gray",
+      ...props
+    },
     ref
   ) {
     return (
       // eslint-disable-next-line jsx-a11y/anchor-has-content
       <Link
-        className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        className={`${common} transition-all ${transition} ${variantStyles[variant][colorScheme]} ${sizeStyles[size]} ${className}`}
         ref={ref}
         {...props}
       />
@@ -75,13 +88,20 @@ export const ActionButton = React.forwardRef<
   HTMLButtonElement,
   ActionButtonProps
 >(function ActionButton(
-  { className = "", size = "md", variant = "block", action, ...props },
+  {
+    className = "",
+    size = "md",
+    variant = "block",
+    colorScheme = "gray",
+    action,
+    ...props
+  },
   ref
 ) {
   return (
     <Form action={action} method="post">
       <button
-        className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        className={`${common} transition-all ${transition} ${variantStyles[variant][colorScheme]} ${sizeStyles[size]} ${className}`}
         type="submit"
         ref={ref}
         {...props}
@@ -97,12 +117,18 @@ interface IconButtonProps extends Omit<ButtonProps, "size"> {
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   function IconButton(
-    { className = "", variant = "block", icon: Icon, ...props },
+    {
+      className = "",
+      variant = "block",
+      colorScheme = "gray",
+      icon: Icon,
+      ...props
+    },
     ref
   ) {
     return (
       <button
-        className={`${variantStyles[variant]} p-3 ${className}`}
+        className={`${common} transition-all ${transition} ${variantStyles[variant][colorScheme]} p-3 ${className}`}
         ref={ref}
         {...props}
       >
