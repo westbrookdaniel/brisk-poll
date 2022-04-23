@@ -26,12 +26,16 @@ export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     { rel: "stylesheet", href: fontsStylesheetUrl },
+    { rel: "icon", href: "/favicon.ico", type: "image/png" },
+    { rel: "icon", href: "/icon.svg", type: "image/svg+xml" },
+    { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+    { rel: "manifest", href: "/manifest.json" },
   ];
 };
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Brisk Poll",
+  title: "Brisk Poll - Do Polls Quickly",
   viewport: "width=device-width,initial-scale=1",
 });
 
@@ -57,6 +61,11 @@ function Document({
       <head>
         <Meta />
         {title ? <title>{title}</title> : null}
+        <meta name="theme-color" content="#ff4b39" />
+        <meta
+          name="description"
+          content="Brisk Poll helps you create polls quickly. Ask a question, share the link, and get your responses in real time. Free forever."
+        />
         <Links />
       </head>
       <body className="flex flex-col items-center min-h-screenish space-y-4">
@@ -98,7 +107,7 @@ export default function App() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <Document title="Something went wrong | Brisk Poll">
+    <Document title="Something went wrong - Brisk Poll">
       <ErrorHandler
         title="App Error"
         message="Looks like something went very wrong."
@@ -110,7 +119,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 export function CatchBoundary() {
   return (
-    <Document title="Something went wrong | Brisk Poll">
+    <Document title="Something went wrong - Brisk Poll">
       <Header />
       <CatchHandler />
     </Document>

@@ -31,7 +31,6 @@ import { useHydrated } from "remix-utils";
 import { useEmit } from "~/sockets";
 import type { EmittedVote } from "server/onVote";
 import Layout from "~/components/Layout";
-import Divider from "~/components/common/Divider";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -107,10 +106,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export const meta: MetaFunction = ({ data }) => {
   if (!data) {
-    return { title: "Page not found | Brisk Poll" };
+    return { title: "Page not found - Brisk Poll" };
   }
   const { poll } = data as LoaderData;
-  return { title: `${poll?.title} | Brisk Poll` };
+  return { title: `${poll?.title} - Brisk Poll` };
 };
 
 export default function VotingPage() {

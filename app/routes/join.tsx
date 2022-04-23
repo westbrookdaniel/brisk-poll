@@ -27,6 +27,7 @@ interface ActionData {
   errors: {
     email?: string;
     password?: string;
+    name?: string;
   };
 }
 
@@ -34,6 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
+  const name = formData.get("name");
   const redirectTo = formData.get("redirectTo");
 
   if (!validateEmail(email)) {
@@ -45,6 +47,12 @@ export const action: ActionFunction = async ({ request }) => {
   if (typeof password !== "string") {
     return json<ActionData>(
       { errors: { password: "Password is required" } },
+      { status: 400 }
+    );
+  }
+  if (typeof name !== "string" || name.length === 0) {
+    return json<ActionData>(
+      { errors: { name: "Name is required" } },
       { status: 400 }
     );
   }
@@ -64,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const user = await createUser(email, password);
+  const user = await createUser({ email, password, name });
 
   return createUserSession({
     request,
@@ -76,7 +84,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Sign Up | Brisk Poll",
+    title: "Sign Up - Brisk Poll",
   };
 };
 
@@ -100,6 +108,13 @@ export default function Join() {
       <Form method="post" className="space-y-6">
         <h1 className="text-2xl">Sign Up</h1>
         <Divider />
+
+        <FormInput
+          label="Your Name"
+          type="text"
+          name="name"
+          error={actionData?.errors?.name}
+        />
 
         <FormInput
           label="Email address"

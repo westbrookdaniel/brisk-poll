@@ -15,7 +15,7 @@
     "dev:watch": "cross-env NODE_ENV=development binode -- @remix-run/dev:remix watch",
     "dev:start": "cross-env NODE_ENV=development tsc-watch --project tsconfig.server.json --onSuccess \"npm run start:mocks\"",
     "format": "prettier --write .",
-    "generate:css": "tailwindcss -i ./app/styles/styles.css -o ./app/styles/tailwind.css",
+    "generate:css": "tailwindcss -i ./app/styles/styles.css -o ./app/styles/tailwind.css --minify",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma migrate dev && prisma db seed",
     "start": "cross-env NODE_ENV=production node build/server",

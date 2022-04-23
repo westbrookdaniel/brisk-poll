@@ -1,7 +1,7 @@
 import { MenuIcon } from "@heroicons/react/solid";
 import { Form, Link } from "@remix-run/react";
 import { useHydrated } from "remix-utils";
-import { shortenString, useOptionalUser } from "~/utils";
+import { useOptionalUser } from "~/utils";
 import { LinkButton, ActionButton, IconButton } from "./common/button";
 import { Menu, MenuItem, MenuItems, MenuSlot } from "./common/menu";
 
@@ -16,12 +16,11 @@ export default function HeaderMenu() {
   if (user) {
     return (
       <>
-        <p className="hidden px-4 lg:block">
-          {shortenString(user.email, 30).shortened}
-        </p>
+        <p className="hidden px-2 lg:block">{user.name}</p>
         <ActionButton
           className="hidden lg:block"
           action={`/logout?${redirectSearchParams}`}
+          colorScheme="blue"
         >
           Logout
         </ActionButton>
@@ -30,7 +29,7 @@ export default function HeaderMenu() {
             <MenuItems className="min-w-[150px] max-w-[275px]">
               <MenuSlot>
                 <p className="pr-2 text-left text-gray-500 whitespace-nowrap">
-                  {shortenString(user.email, 30).shortened}
+                  {user.name}
                 </p>
               </MenuSlot>
               <Form action={`/logout?${redirectSearchParams}`} method="post">
@@ -42,6 +41,7 @@ export default function HeaderMenu() {
             as: IconButton,
             icon: MenuIcon,
             colorScheme: "blue",
+            "aria-label": "Menu",
           }}
           className="block lg:hidden"
         />
@@ -80,6 +80,7 @@ export default function HeaderMenu() {
           as: IconButton,
           icon: MenuIcon,
           colorScheme: "blue",
+          "aria-label": "Menu",
         }}
         className="block lg:hidden"
       />

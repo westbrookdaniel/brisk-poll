@@ -50,15 +50,3 @@ export function validateEmail(email: unknown): email is string {
 export function generateId(seed?: string): string {
   return seed ? uuidv5(seed, uuidv5.URL) : uuidv4();
 }
-
-export function shortenString(
-  original: string,
-  maxLength?: number,
-  indicator: string = "..."
-) {
-  const shortened =
-    maxLength && original.length > maxLength
-      ? original.substring(0, maxLength - indicator.length) + indicator
-      : original;
-  return { shortened, isShortened: shortened !== original };
-}
