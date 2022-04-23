@@ -6,7 +6,12 @@
   body {
     @apply font-body;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-semibold font-display;
   }
 }
@@ -14,5 +19,14 @@
 @layer components {
   .logo {
     @apply italic font-bold text-blue-600 font-logo;
+  }
+}
+
+@layer utilities {
+  .min-h-screenish {
+    height: 100vh;
+    height: -moz-available;
+    height: -webkit-fill-available;
+    height: fill-available;
   }
 }

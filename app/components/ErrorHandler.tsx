@@ -8,7 +8,7 @@ interface Props {
 
 export default function ErrorHandler({ title, message, error }: Props) {
   return (
-    <main className="flex flex-col flex-grow w-full max-w-6xl p-8 py-16 space-y-2">
+    <main className="flex flex-col flex-grow w-full max-w-6xl p-4 py-16 md:p-8 space-y-2">
       <h1 className="mb-2 text-2xl">{title}</h1>
       <p>{message}</p>
       {error ? (

@@ -59,7 +59,7 @@ function Document({
         {title ? <title>{title}</title> : null}
         <Links />
       </head>
-      <body className="flex flex-col items-center min-h-screen space-y-4">
+      <body className="flex flex-col items-center min-h-screenish space-y-4">
         {children}
         <ScrollRestoration />
         <Scripts />
