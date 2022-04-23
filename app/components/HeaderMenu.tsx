@@ -42,6 +42,7 @@ export default function HeaderMenu() {
             as: IconButton,
             icon: MenuIcon,
             colorScheme: "blue",
+            "aria-label": "Menu",
           }}
           className="block lg:hidden"
         />
@@ -80,6 +81,7 @@ export default function HeaderMenu() {
           as: IconButton,
           icon: MenuIcon,
           colorScheme: "blue",
+          "aria-label": "Menu",
         }}
         className="block lg:hidden"
       />

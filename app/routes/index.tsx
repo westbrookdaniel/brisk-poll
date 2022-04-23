@@ -94,6 +94,7 @@ export default function Index() {
                   aria-label={`Option ${id}`}
                   placeholder={`Label for option ${i + 1}`}
                   name="option"
+                  id={`option-${id}`}
                   // and then autofocus on newly added options
                   autoFocus={
                     options.length > 0 ? options.length === i + 1 : false
@@ -104,6 +105,7 @@ export default function Index() {
                   type="button"
                   variant="ghost"
                   icon={TrashIcon}
+                  aria-label="Remove"
                   onClick={() =>
                     setOptions((opts) => opts.filter((o) => o !== id))
                   }
@@ -127,7 +129,7 @@ export default function Index() {
               : "Create Poll"}
           </Button>
 
-          <div className="space-y-2">
+          <div className="space-y-4 md:space-y-2">
             <FormCheckbox
               name="requireAccount"
               label="Require account to vote"
