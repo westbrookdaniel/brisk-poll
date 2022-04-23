@@ -31,7 +31,7 @@ export const Checkbox: React.FC<React.HTMLProps<HTMLInputElement>> = ({
     <input
       className={`${block} ${withRing} ${
         invalid ? manualBlockInvalid : "border-transparent"
-      } form-checkbox text-gray-900 accent-gray-900 ${className}`}
+      } form-checkbox text-blue-600 accent-blue-600 ${className}`}
       aria-invalid={invalid}
       {...props}
       type="checkbox"
@@ -48,7 +48,7 @@ export const Radio: React.FC<React.HTMLProps<HTMLInputElement>> = ({
     <input
       className={`${block} ${withRing} ${
         invalid ? manualBlockInvalid : "border-transparent"
-      } form-radio text-gray-900 accent-gray-900 ${className}`}
+      } form-radio text-blue-600 accent-blue-600 ${className}`}
       {...props}
       type="radio"
     />

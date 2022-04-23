@@ -61,6 +61,7 @@ export default function HeaderMenu() {
       <LinkButton
         className="hidden lg:block"
         to={`/join?${redirectSearchParams}`}
+        colorScheme="blue"
       >
         Sign Up
       </LinkButton>

@@ -14,6 +14,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+import fontsStylesheetUrl from "./styles/fonts.css";
 import { getUser } from "./session.server";
 import Header from "./components/Header";
 import ErrorHandler from "./components/ErrorHandler";
@@ -22,7 +23,10 @@ import io from "socket.io-client";
 import { SocketProvider } from "./context";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    { rel: "stylesheet", href: fontsStylesheetUrl },
+  ];
 };
 
 export const meta: MetaFunction = () => ({

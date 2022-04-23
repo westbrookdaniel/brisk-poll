@@ -134,7 +134,7 @@ export default function VotingPage() {
     <Layout>
       <fetcher.Form method="post" className="space-y-16">
         <fieldset className="space-y-8">
-          <legend className="text-lg">{poll.title}</legend>
+          <h1 className="text-lg text-gray-500">{poll.title}</h1>
           <div className="space-y-4">
             {poll.options.map((option) => (
               <FormRadio
@@ -143,7 +143,7 @@ export default function VotingPage() {
                 name="option"
                 value={option.id}
                 error={!!fetcher.data?.errors?.option}
-                className="text-4xl font-bold"
+                className="text-4xl font-semibold"
               />
             ))}
           </div>
@@ -155,14 +155,18 @@ export default function VotingPage() {
           <Modal
             title={fetcher.data?.errors?.alreadyVoted}
             description="Why don't you check out the poll results instead"
-            body={<LinkButton to="results">View Poll Results</LinkButton>}
+            body={
+              <LinkButton to="results" colorScheme="blue">
+                View Poll Results
+              </LinkButton>
+            }
             isOpen
           />
         ) : null}
 
         <div className="space-y-2">
           <div className="flex flex-col w-full space-y-2 md:flex-row md:space-y-0 md:space-x-2">
-            <Button type="submit" className="flex-grow">
+            <Button type="submit" className="flex-grow" colorScheme="blue">
               Confirm Choice
             </Button>
             <Button

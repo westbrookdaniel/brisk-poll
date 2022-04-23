@@ -97,6 +97,8 @@ export default function Join() {
   return (
     <Layout>
       <Form method="post" className="space-y-6">
+        <h1 className="mb-12 text-2xl">Sign Up</h1>
+
         <FormInput
           label="Email address"
           type="email"
@@ -116,7 +118,7 @@ export default function Join() {
 
         <input type="hidden" name="redirectTo" value={redirectTo} />
 
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" colorScheme="blue">
           Create Account
         </Button>
 
