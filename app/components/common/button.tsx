@@ -23,7 +23,7 @@ const variantStyles = {
   },
 };
 
-const common = `block text-center select-none font-medium focus-visible:outline-0 ${withRing}`;
+const common = `block rounded-lg text-center select-none font-medium focus-visible:outline-0 ${withRing}`;
 
 interface DefaultProps {
   size?: "sm" | "md" | "lg";
@@ -72,7 +72,7 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
     return (
       // eslint-disable-next-line jsx-a11y/anchor-has-content
       <Link
-        className={`${variantStyles[variant][colorScheme]} ${sizeStyles[size]} ${className}`}
+        className={`${common} transition-all ${transition} ${variantStyles[variant][colorScheme]} ${sizeStyles[size]} ${className}`}
         ref={ref}
         {...props}
       />
@@ -101,7 +101,7 @@ export const ActionButton = React.forwardRef<
   return (
     <Form action={action} method="post">
       <button
-        className={`${variantStyles[variant][colorScheme]} ${sizeStyles[size]} ${className}`}
+        className={`${common} transition-all ${transition} ${variantStyles[variant][colorScheme]} ${sizeStyles[size]} ${className}`}
         type="submit"
         ref={ref}
         {...props}
@@ -128,7 +128,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   ) {
     return (
       <button
-        className={`${variantStyles[variant][colorScheme]} p-3 ${className}`}
+        className={`${common} transition-all ${transition} ${variantStyles[variant][colorScheme]} p-3 ${className}`}
         ref={ref}
         {...props}
       >

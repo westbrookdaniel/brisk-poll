@@ -59,7 +59,7 @@ export function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="flex flex-col items-start w-full max-w-md p-6 my-8 overflow-hidden text-left bg-white shadow-xl transform space-y-4 transition-all">
+              <div className="flex flex-col items-start w-full max-w-md p-6 my-8 overflow-hidden text-left bg-white rounded-lg shadow-xl transform space-y-4 transition-all">
                 <div className="space-y-1">
                   <Dialog.Title
                     as="h3"

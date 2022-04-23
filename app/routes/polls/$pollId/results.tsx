@@ -133,7 +133,7 @@ function OptionVotes({ option, totalVotes, onNewVote }: OptionProps) {
         <div className="flex items-center space-x-2">
           <div
             style={{ width: `${(votes / totalVotes) * 100}%` }}
-            className="h-4 bg-blue-200"
+            className="h-4 bg-blue-200 rounded-full"
           />
           <span className="text-blue-600">{votes}</span>
         </div>

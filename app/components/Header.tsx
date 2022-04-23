@@ -6,7 +6,7 @@ import Logo from "./Logo";
 export default function Header() {
   return (
     <header className="flex items-center justify-between w-full">
-      <div className="flex-1">
+      <div className="flex flex-1">
         <Link to="/" className={withRing}>
           <Logo className="w-12" />
         </Link>

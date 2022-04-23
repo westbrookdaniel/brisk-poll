@@ -32,7 +32,7 @@ export function Menu({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <HeadlessMenu.Items className="absolute right-0 mt-2 bg-white shadow-lg origin-top-right divide-y divide-gray-100 focus:outline-none">
+        <HeadlessMenu.Items className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg origin-top-right divide-y divide-gray-100 focus:outline-none">
           {body}
         </HeadlessMenu.Items>
       </Transition>
