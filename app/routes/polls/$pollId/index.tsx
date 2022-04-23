@@ -31,7 +31,6 @@ import { useHydrated } from "remix-utils";
 import { useEmit } from "~/sockets";
 import type { EmittedVote } from "server/onVote";
 import Layout from "~/components/Layout";
-import Divider from "~/components/common/Divider";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
