@@ -8,10 +8,12 @@ interface Props {
 
 export default function ErrorHandler({ title, message, error }: Props) {
   return (
-    <main className="flex flex-col justify-center flex-grow w-full max-w-6xl py-16 space-y-4">
-      <h1 className="mb-2 text-4xl">{title}</h1>
+    <main className="flex flex-col flex-grow w-full max-w-6xl p-8 py-16 space-y-2">
+      <h1 className="mb-2 text-2xl">{title}</h1>
       <p>{message}</p>
-      {error ? <pre className="overflow-x-auto text-red-700">{error}</pre> : null}
+      {error ? (
+        <pre className="overflow-x-auto text-red-700">{error}</pre>
+      ) : null}
     </main>
   );
 }

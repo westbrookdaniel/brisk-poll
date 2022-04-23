@@ -15,6 +15,7 @@ import { FormInput } from "~/components/common/form";
 import { Button } from "~/components/common/button";
 import { link } from "~/components/common/styles";
 import Layout from "~/components/Layout";
+import Divider from "~/components/common/Divider";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
@@ -75,7 +76,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Sign Up",
+    title: "Sign Up | Brisk Poll",
   };
 };
 
@@ -97,7 +98,8 @@ export default function Join() {
   return (
     <Layout>
       <Form method="post" className="space-y-6">
-        <h1 className="mb-12 text-2xl">Sign Up</h1>
+        <h1 className="text-2xl">Sign Up</h1>
+        <Divider />
 
         <FormInput
           label="Email address"

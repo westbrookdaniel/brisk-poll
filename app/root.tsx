@@ -17,7 +17,7 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import fontsStylesheetUrl from "./styles/fonts.css";
 import { getUser } from "./session.server";
 import Header from "./components/Header";
-import ErrorHandler from "./components/ErrorHandler";
+import ErrorHandler, { CatchHandler } from "./components/ErrorHandler";
 import type { Socket } from "socket.io-client";
 import io from "socket.io-client";
 import { SocketProvider } from "./context";
@@ -59,7 +59,7 @@ function Document({
         {title ? <title>{title}</title> : null}
         <Links />
       </head>
-      <body className="flex flex-col items-center max-w-6xl min-h-screen p-8 mx-auto m space-y-4">
+      <body className="flex flex-col items-center min-h-screen space-y-4">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -98,12 +98,21 @@ export default function App() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <Document title="Something went wrong">
+    <Document title="Something went wrong | Brisk Poll">
       <ErrorHandler
         title="App Error"
         message="Looks like something went very wrong."
         error={error.message}
       />
+    </Document>
+  );
+}
+
+export function CatchBoundary() {
+  return (
+    <Document title="Something went wrong | Brisk Poll">
+      <Header />
+      <CatchHandler />
     </Document>
   );
 }

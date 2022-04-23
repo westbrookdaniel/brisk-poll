@@ -31,6 +31,7 @@ import { useHydrated } from "remix-utils";
 import { useEmit } from "~/sockets";
 import type { EmittedVote } from "server/onVote";
 import Layout from "~/components/Layout";
+import Divider from "~/components/common/Divider";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -106,10 +107,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export const meta: MetaFunction = ({ data }) => {
   if (!data) {
-    return { title: "Poll not found" };
+    return { title: "Page not found | Brisk Poll" };
   }
   const { poll } = data as LoaderData;
-  return { title: poll?.title };
+  return { title: `${poll?.title} | Brisk Poll` };
 };
 
 export default function VotingPage() {
@@ -134,7 +135,7 @@ export default function VotingPage() {
     <Layout>
       <fetcher.Form method="post" className="space-y-16">
         <fieldset className="space-y-8">
-          <h1 className="text-lg text-gray-500">{poll.title}</h1>
+          <legend>{poll.title}</legend>
           <div className="space-y-4">
             {poll.options.map((option) => (
               <FormRadio
@@ -164,7 +165,7 @@ export default function VotingPage() {
           />
         ) : null}
 
-        <div className="space-y-2">
+        <div className="space-y-4">
           <div className="flex flex-col w-full space-y-2 md:flex-row md:space-y-0 md:space-x-2">
             <Button type="submit" className="flex-grow" colorScheme="blue">
               Confirm Choice

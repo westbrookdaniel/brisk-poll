@@ -37,10 +37,10 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
 export const meta: MetaFunction = ({ data }) => {
   if (!data) {
-    return { title: "Poll not found" };
+    return { title: "Page not found | Brisk Poll" };
   }
   const { poll } = data as LoaderData;
-  return { title: poll?.title };
+  return { title: `${poll?.title} | Brisk Poll` };
 };
 
 export default function PollResultsPage() {
@@ -62,7 +62,7 @@ export default function PollResultsPage() {
   return (
     <Layout>
       <div className="space-y-8">
-        <h1 className="text-lg text-gray-500">{poll.title}</h1>
+        <h1 className="font-normal text-md">{poll.title}</h1>
         <div className="space-y-6">
           {poll.options.map((option) => {
             return (
@@ -76,7 +76,7 @@ export default function PollResultsPage() {
           })}
         </div>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-4">
         <div className="text-sm text-right text-gray-500">
           {userVotes?.length > 0 ? (
             <p>

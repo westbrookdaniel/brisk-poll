@@ -41,7 +41,7 @@ export default function HeaderMenu() {
           buttonProps={{
             as: IconButton,
             icon: MenuIcon,
-            variant: "ghost",
+            colorScheme: "blue",
           }}
           className="block lg:hidden"
         />
@@ -79,7 +79,7 @@ export default function HeaderMenu() {
         buttonProps={{
           as: IconButton,
           icon: MenuIcon,
-          variant: "ghost",
+          colorScheme: "blue",
         }}
         className="block lg:hidden"
       />

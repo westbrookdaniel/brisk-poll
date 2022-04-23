@@ -12,6 +12,7 @@ import { FormCheckbox, FormInput } from "~/components/common/form";
 import { Button } from "~/components/common/button";
 import { link } from "~/components/common/styles";
 import Layout from "~/components/Layout";
+import Divider from "~/components/common/Divider";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
@@ -65,7 +66,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Login",
+    title: "Login | Brisk Poll",
   };
 };
 
@@ -77,7 +78,8 @@ export default function LoginPage() {
   return (
     <Layout>
       <Form method="post" className="space-y-6">
-        <h1 className="mb-12 text-2xl">Welcome Back</h1>
+        <h1 className="text-2xl">Welcome Back</h1>
+        <Divider />
 
         <FormInput
           label="Email address"
