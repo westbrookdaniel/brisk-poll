@@ -1,10 +1,6 @@
 import faker from "@faker-js/faker";
 
 describe("smoke tests", () => {
-  afterEach(() => {
-    cy.cleanupUser();
-  });
-
   it("should allow you to register and login", () => {
     const loginForm = {
       name: faker.name.findName(),
@@ -25,5 +21,33 @@ describe("smoke tests", () => {
     cy.findByText(/logout/i).click();
 
     cy.findByRole("link", { name: /login/i });
+
+    cy.cleanupUser();
+  });
+
+  it("should allow you to create a poll and vote", () => {
+    const poll = {
+      title: "Who is your favourite person?",
+      options: [
+        faker.name.findName(),
+        faker.name.findName(),
+        faker.name.findName(),
+      ],
+    };
+    cy.visit("/");
+    cy.findByRole("textbox", { name: /title/i }).type(poll.title);
+
+    cy.findByPlaceholderText(/label for option 1/i).type(poll.options[0]);
+    cy.findByPlaceholderText(/label for option 2/i).type(poll.options[1]);
+    cy.findByText(/add option/i).click();
+    cy.findByPlaceholderText(/label for option 3/i).type(poll.options[2]);
+
+    cy.findByText(/create poll/i).click();
+
+    cy.findByLabelText(poll.options[1]).click();
+
+    cy.findByText(/confirm choice/i).click();
+
+    cy.findByTestId(poll.options[1]).contains("1");
   });
 });

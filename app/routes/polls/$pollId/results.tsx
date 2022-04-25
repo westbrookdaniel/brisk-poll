@@ -135,7 +135,9 @@ function OptionVotes({ option, totalVotes, onNewVote }: OptionProps) {
             style={{ width: `${(votes / totalVotes) * 100}%` }}
             className="h-4 bg-blue-200 rounded-full"
           />
-          <span className="text-blue-600">{votes}</span>
+          <span className="text-blue-600" data-testid={option.title}>
+            {votes}
+          </span>
         </div>
       )}
     </div>
