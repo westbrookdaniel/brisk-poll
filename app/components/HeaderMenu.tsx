@@ -2,7 +2,7 @@ import { MenuIcon } from "@heroicons/react/solid";
 import { Form, Link } from "@remix-run/react";
 import { useHydrated } from "remix-utils";
 import { useOptionalUser } from "~/utils";
-import { LinkButton, ActionButton, IconButton } from "./common/button";
+import { LinkButton, IconButton } from "./common/button";
 import { Menu, MenuItem, MenuItems, MenuSlot } from "./common/menu";
 
 export default function HeaderMenu() {
@@ -17,25 +17,30 @@ export default function HeaderMenu() {
     return (
       <>
         <p className="hidden px-2 lg:block">{user.name}</p>
-        <ActionButton
-          className="hidden lg:block"
-          action={`/logout?${redirectSearchParams}`}
-          colorScheme="blue"
-        >
-          Logout
-        </ActionButton>
         <Menu
           body={
-            <MenuItems className="min-w-[150px] max-w-[275px]">
-              <MenuSlot>
-                <p className="pr-2 text-left text-gray-500 whitespace-nowrap">
-                  {user.name}
-                </p>
-              </MenuSlot>
-              <Form action={`/logout?${redirectSearchParams}`} method="post">
-                <MenuItem>Logout</MenuItem>
-              </Form>
-            </MenuItems>
+            <>
+              <MenuItems className="min-w-[150px] max-w-[275px]">
+                <div className="block lg:hidden">
+                  <MenuSlot>
+                    <p className="pr-2 text-left text-gray-500 whitespace-nowrap">
+                      {user.name}
+                    </p>
+                  </MenuSlot>
+                </div>
+                <Link to="/profile">
+                  <MenuItem>My Polls</MenuItem>
+                </Link>
+                <Link to="/profile/settings">
+                  <MenuItem>Settings</MenuItem>
+                </Link>
+              </MenuItems>
+              <MenuItems className="min-w-[150px] max-w-[275px]">
+                <Form action={`/logout?${redirectSearchParams}`} method="post">
+                  <MenuItem>Logout</MenuItem>
+                </Form>
+              </MenuItems>
+            </>
           }
           buttonProps={{
             as: IconButton,
@@ -43,7 +48,6 @@ export default function HeaderMenu() {
             colorScheme: "blue",
             "aria-label": "Menu",
           }}
-          className="block lg:hidden"
         />
       </>
     );
