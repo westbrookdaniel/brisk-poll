@@ -61,10 +61,7 @@ export function Modal({
             >
               <div className="flex flex-col items-start w-full max-w-md p-6 my-8 overflow-hidden text-left bg-white rounded-lg shadow-xl transform space-y-4 transition-all">
                 <div className="space-y-1">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-xl leading-6"
-                  >
+                  <Dialog.Title as="h3" className="text-xl leading-6">
                     {title}
                   </Dialog.Title>
 
@@ -73,7 +70,9 @@ export function Modal({
                   </Dialog.Description>
                 </div>
 
-                {body}
+                {typeof body === "function"
+                  ? body(openModal, closeModal)
+                  : body}
               </div>
             </Transition.Child>
           </div>

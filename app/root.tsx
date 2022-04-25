@@ -61,7 +61,7 @@ function Document({
       <head>
         <Meta />
         {title ? <title>{title}</title> : null}
-        <meta name="theme-color" content="#ff4b39" />
+        <meta name="theme-color" content="#ffffff" />
         <meta
           name="description"
           content="Brisk Poll helps you create polls quickly. Ask a question, share the link, and get your responses in real time. Free forever."

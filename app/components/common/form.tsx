@@ -32,7 +32,7 @@ export const FormHelper: React.FC<FormHelperProps> = ({
   className = "",
 }) => {
   return helper ? (
-    <p className={`text-sm text-gray-700 ${className}`}>{helper}</p>
+    <p className={`text-sm text-gray-500 ${className}`}>{helper}</p>
   ) : null;
 };
 
@@ -72,7 +72,7 @@ export const FormElements: React.FC<FormElementsProps> = ({
   return (
     <div {...containerProps}>
       {label || helper ? (
-        <div className="mb-2">
+        <div className="mb-2 space-y-1">
           <FormLabel label={label} name={name} />
           <FormHelper helper={helper} />
         </div>

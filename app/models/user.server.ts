@@ -9,6 +9,15 @@ export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
 }
 
+export async function getUserPollsById(id: User["id"]) {
+  return prisma.user.findUnique({
+    where: { id },
+    include: {
+      polls: { include: { options: { include: { votes: true } } } },
+    },
+  });
+}
+
 export async function getUserByEmail(email: User["email"]) {
   return prisma.user.findUnique({ where: { email } });
 }
@@ -30,6 +39,26 @@ export async function createUser({
         },
       },
     },
+  });
+}
+
+export async function updateUser({
+  id,
+  email,
+  password,
+  name,
+}: Pick<User, "id"> &
+  Partial<Pick<User, "email" | "name"> & { password: string }>) {
+  const data: any = {};
+
+  if (email) data.email = email;
+  if (name) data.name = name;
+  if (password)
+    data.password = { create: { hash: await bcrypt.hash(password, 10) } };
+
+  return prisma.user.update({
+    where: { id },
+    data,
   });
 }
 

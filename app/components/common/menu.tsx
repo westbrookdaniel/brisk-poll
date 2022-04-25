@@ -50,7 +50,7 @@ export function MenuItem({ children }: MenuItemProps) {
       {({ active }) => (
         <button
           className={`${
-            active ? "bg-gray-200" : "text-gray-900"
+            active ? "bg-gray-100" : "text-gray-900"
           } flex w-full items-center px-4 py-2`}
         >
           {typeof children === "function" ? children(active) : children}
