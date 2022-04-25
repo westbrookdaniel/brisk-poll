@@ -4,10 +4,8 @@ import { useLoaderData } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
 import Layout from "~/components/Layout";
 import Divider from "~/components/common/Divider";
-import type { Option, Poll, Vote } from "@prisma/client";
-import { Link } from "react-router-dom";
-import { shortenString } from "~/utils";
 import { getUserPollsById } from "~/models/user.server";
+import PollItem from "~/components/PollItem";
 
 interface LoaderData {
   user: Awaited<ReturnType<typeof getUserPollsById>>;
@@ -40,28 +38,5 @@ export default function ProfilePage() {
         </div>
       </div>
     </Layout>
-  );
-}
-
-interface PollItemProps {
-  poll: Poll & { options: (Option & { votes: Vote[] })[] };
-}
-
-function PollItem({ poll }: PollItemProps) {
-  return (
-    <Link
-      className="flex items-center justify-between px-5 py-4 border rounded-lg hover:bg-gray-100"
-      to={`/polls/${poll.id}/results`}
-    >
-      <div>
-        <h3 className="underline">{shortenString(poll.title, 50).shortened}</h3>
-        <p className="text-gray-500">
-          Created on {new Date(poll.createdAt).toDateString()}
-        </p>
-      </div>
-      <div className="text-right text-gray-500">
-        <p>{poll.options.reduce((a, o) => a + o.votes.length, 0)} votes</p>
-      </div>
-    </Link>
   );
 }
