@@ -14,9 +14,9 @@ import { getUserVotes } from "~/models/vote.model";
 import { getUserId } from "~/session.server";
 import { LinkButton } from "~/components/common/button";
 import { useHydrated } from "remix-utils";
-import { useListen } from "~/sockets";
-import type { Option, Vote } from "@prisma/client";
 import Layout from "~/components/Layout";
+import OptionVotes from "~/components/OptionVotes";
+import { getTotalVotes } from "~/utils";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -50,11 +50,7 @@ export default function PollResultsPage() {
   const userVotes = data.userVotes;
 
   const [newVotes, setNewVotes] = React.useState(0);
-  const totalVotes =
-    poll.options.reduce((total, option) => {
-      total += option.votes.length;
-      return total;
-    }, 0) + newVotes;
+  const totalVotes = getTotalVotes(poll) + newVotes;
 
   const pathToVote = `/polls/${poll.id}`;
   const linkToVote = `${hydrated ? window.location.origin : ""}${pathToVote}`;
@@ -102,43 +98,6 @@ export default function PollResultsPage() {
         <PollLink url={linkToVote} />
       </div>
     </Layout>
-  );
-}
-
-interface OptionProps {
-  option: Option & { votes: Vote[] };
-  totalVotes: number;
-  onNewVote?: () => void;
-}
-
-function OptionVotes({ option, totalVotes, onNewVote }: OptionProps) {
-  const [newVotes, setNewVotes] = React.useState(0);
-  const votes = option.votes.length + newVotes;
-
-  useListen(`option ${option.id}`, (event) => {
-    if (event === "vote") {
-      setNewVotes((v) => v + 1);
-      onNewVote && onNewVote();
-    }
-  });
-
-  return (
-    <div key={option.id} className="space-y-1">
-      <p className="text-4xl font-semibold text-blue-600">{option.title}</p>
-      {votes === 0 ? (
-        <div className="h-4">
-          <span>No votes</span>
-        </div>
-      ) : (
-        <div className="flex items-center space-x-2">
-          <div
-            style={{ width: `${(votes / totalVotes) * 100}%` }}
-            className="h-4 bg-blue-200 rounded-full"
-          />
-          <span className="text-blue-600">{votes}</span>
-        </div>
-      )}
-    </div>
   );
 }
 

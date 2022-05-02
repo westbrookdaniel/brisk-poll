@@ -47,6 +47,7 @@
     "@remix-run/server-runtime": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
     "express": "^4.17.3",
     "joi": "^17.6.0",
     "morgan": "^1.10.0",
@@ -56,8 +57,7 @@
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "tiny-invariant": "^1.2.0",
-    "uuid": "^8.3.2",
-    "cross-env": "^7.0.3"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.1.2",

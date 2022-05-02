@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { useBoolean } from "~/utils";
 
 type RenderFunction = (
   openModal: () => void,
@@ -21,22 +22,19 @@ export function Modal({
   body,
   isOpen: externalIsOpen,
 }: Props) {
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  const closeModal = () => setIsOpen(false);
-  const openModal = () => setIsOpen(true);
+  const [isOpen, setIsOpen] = useBoolean(false);
 
   return (
     <>
       {typeof children === "function"
-        ? children(openModal, closeModal)
+        ? children(setIsOpen.on, setIsOpen.off)
         : children}
 
       <Transition appear show={externalIsOpen || isOpen} as={React.Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={closeModal}
+          onClose={setIsOpen.off}
         >
           <div className="flex items-center justify-center min-h-screen px-4">
             <Transition.Child
@@ -71,7 +69,7 @@ export function Modal({
                 </div>
 
                 {typeof body === "function"
-                  ? body(openModal, closeModal)
+                  ? body(setIsOpen.on, setIsOpen.off)
                   : body}
               </div>
             </Transition.Child>
