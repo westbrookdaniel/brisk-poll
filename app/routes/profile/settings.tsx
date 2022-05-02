@@ -12,7 +12,7 @@ import Layout from "~/components/Layout";
 import Divider from "~/components/common/Divider";
 import { Button } from "~/components/common/button";
 import { FormInput } from "~/components/common/form";
-import { validateEmail } from "~/utils";
+import { useBoolean, validateEmail } from "~/utils";
 import { getUserByEmail, updateUser } from "~/models/user.server";
 import { Modal } from "~/components/common/modal";
 import ErrorHandler, { CatchHandler } from "~/components/ErrorHandler";
@@ -87,7 +87,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function ProfilePage() {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useBoolean(false);
   const data = useLoaderData() as LoaderData;
   const user = data.user!;
 
@@ -95,9 +95,9 @@ export default function ProfilePage() {
 
   React.useEffect(() => {
     if (fetcher.type === "done" && fetcher.data.success) {
-      setIsOpen(true);
+      setIsOpen.on();
     }
-  }, [fetcher.data?.success, fetcher.type]);
+  }, [fetcher.data?.success, fetcher.type, setIsOpen]);
 
   return (
     <Layout>
@@ -143,7 +143,7 @@ export default function ProfilePage() {
         title="Profile updated"
         description="Enjoy your updated profile"
         body={
-          <Button onClick={() => setIsOpen(false)} colorScheme="blue">
+          <Button onClick={setIsOpen.off} colorScheme="blue">
             Close
           </Button>
         }

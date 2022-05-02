@@ -31,6 +31,7 @@ import { useHydrated } from "remix-utils";
 import { useEmit } from "~/sockets";
 import type { EmittedVote } from "server/onVote";
 import Layout from "~/components/Layout";
+import {useBoolean} from "~/utils";
 
 interface LoaderData {
   poll: Awaited<ReturnType<typeof getPoll>>;
@@ -120,7 +121,7 @@ export default function VotingPage() {
   const poll = data.poll!;
   const navigate = useNavigate();
 
-  const [isShareVisible, setIsShareVisible] = React.useState(false);
+  const [isShareVisible, setIsShareVisible] = useBoolean(false);
 
   React.useEffect(() => {
     if (fetcher.type !== "done") return;
@@ -170,7 +171,7 @@ export default function VotingPage() {
           </Button>
           <Button
             type="button"
-            onClick={() => setIsShareVisible((s) => !s)}
+            onClick={setIsShareVisible.toggle}
             className="w-full"
             variant="ghost"
           >

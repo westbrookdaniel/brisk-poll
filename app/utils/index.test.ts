@@ -1,4 +1,4 @@
-import { validateEmail, generateId, shortenString } from "./utils";
+import { validateEmail, generateId, shortenString } from ".";
 import faker from "@faker-js/faker";
 
 describe("validateEmai", () => {

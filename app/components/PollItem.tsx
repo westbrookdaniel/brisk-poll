@@ -1,14 +1,14 @@
 import * as React from "react";
 import type { Poll, Vote, Option } from "@prisma/client";
 import { Link } from "@remix-run/react";
-import { shortenString } from "~/utils";
+import { getTotalVotes, shortenString } from "~/utils";
 
 interface Props {
   poll: Poll & { options: (Option & { votes: Vote[] })[] };
 }
 
 const PollItem = ({ poll }: Props) => {
-  const voteCount = poll.options.reduce((a, o) => a + o.votes.length, 0);
+  const voteCount = getTotalVotes(poll);
   return (
     <Link
       className="flex items-center px-5 py-4 border rounded-lg space-x-4 hover:bg-gray-100"

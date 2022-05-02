@@ -1,5 +1,5 @@
 import { ClipboardCheckIcon, ClipboardIcon } from "@heroicons/react/solid";
-import * as React from "react";
+import { useBoolean } from "~/utils";
 import { IconButton } from "./common/button";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function PollLink({ url }: Props) {
-  const [copied, setCopied] = React.useState(false);
+  const [copied, setCopied] = useBoolean(false);
 
   return (
     <div className="flex items-center w-full space-x-2">
@@ -24,7 +24,7 @@ export default function PollLink({ url }: Props) {
         icon={copied ? ClipboardCheckIcon : ClipboardIcon}
         onClick={() => {
           navigator.clipboard.writeText(url);
-          setCopied(true);
+          setCopied.on();
         }}
         aria-label="Copy"
         // Ensures that it doesn't submit any forms
