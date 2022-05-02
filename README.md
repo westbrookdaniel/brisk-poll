@@ -1,6 +1,6 @@
 # Brisk Poll
 
-A work in progress polling app
+An app for quick and simple polls 
 
 Production:
 https://brisk-poll.fly.dev/
