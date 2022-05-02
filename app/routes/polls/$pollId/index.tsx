@@ -120,7 +120,7 @@ export default function VotingPage() {
   const poll = data.poll!;
   const navigate = useNavigate();
 
-  const [shared, setShared] = React.useState(false);
+  const [isShareVisible, setIsShareVisible] = React.useState(false);
 
   React.useEffect(() => {
     if (fetcher.type !== "done") return;
@@ -165,22 +165,18 @@ export default function VotingPage() {
         ) : null}
 
         <div className="space-y-4">
-          <div className="flex flex-col w-full space-y-2 md:flex-row md:space-y-0 md:space-x-2">
-            <Button type="submit" className="flex-grow" colorScheme="blue">
-              Confirm Choice
-            </Button>
-            <Button
-              variant="ghost"
-              type="button"
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                setShared(true);
-              }}
-            >
-              {shared ? "Copied Link" : "Share Poll"}
-            </Button>
-          </div>
-          {shared ? (
+          <Button type="submit" className="w-full" colorScheme="blue">
+            Confirm Choice
+          </Button>
+          <Button
+            type="button"
+            onClick={() => setIsShareVisible((s) => !s)}
+            className="w-full"
+            variant="ghost"
+          >
+            {isShareVisible ? "Hide Link" : "Share Poll"}
+          </Button>
+          {isShareVisible ? (
             <PollLink
               url={hydrated ? window.location.href : "Preparing link to poll"}
             />
