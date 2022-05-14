@@ -4,7 +4,8 @@
 
 @layer base {
   body {
-    @apply text-gray-900 font-body;
+    /* whitespace-pre-line makes multiline strings wrap easier in react */
+    @apply text-gray-900 whitespace-pre-line font-body;
   }
   h1,
   h2,
