@@ -6,7 +6,12 @@ import { getUserId } from "~/session.server";
 import { useActionData, useTransition, Form } from "@remix-run/react";
 import React from "react";
 import { Button, IconButton } from "~/components/common/button";
-import { FormInput, FormError, FormCheckbox } from "~/components/common/form";
+import {
+  FormInput,
+  FormError,
+  FormCheckbox,
+  FormTextArea,
+} from "~/components/common/form";
 import { generateId } from "~/utils";
 import { TrashIcon } from "@heroicons/react/solid";
 import Layout from "~/components/Layout";
@@ -51,9 +56,9 @@ export const action: ActionFunction = async ({ request }) => {
   const userId = await getUserId(request);
 
   const poll = await createPoll({
-    title,
+    title: title.trim(),
     userId,
-    options,
+    options: options.map((option) => option.trim()),
     requireAccount: requireAccount === "on" ? true : false,
     allowMultipleVotes: allowMultipleVotes === "on" ? true : false,
   });
@@ -77,11 +82,12 @@ export default function Index() {
           className="space-y-6"
           disabled={transition.state === "submitting"}
         >
-          <FormInput
+          <FormTextArea
             aria-label="Poll title"
             placeholder="What is the title of your poll?"
             name="title"
             error={actionData?.errors?.title}
+            autoExpand
             // Autofocus here first
             autoFocus
           />
@@ -89,12 +95,13 @@ export default function Index() {
           <fieldset className="flex flex-col pb-4 space-y-2">
             {options.map((id, i) => (
               <div key={id} className="flex items-center space-x-2">
-                <FormInput
+                <FormTextArea
                   containerProps={{ className: "flex-grow" }}
                   aria-label={`Option ${id}`}
                   placeholder={`Label for option ${i + 1}`}
                   name="option"
                   id={`option-${id}`}
+                  autoExpand
                   // and then autofocus on newly added options
                   autoFocus={
                     options.length > 0 ? options.length === i + 1 : false

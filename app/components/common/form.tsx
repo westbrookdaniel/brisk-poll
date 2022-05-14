@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Checkbox, Input, Radio } from "./input";
+import { Checkbox, Input, Radio, TextArea, TextAreaProps } from "./input";
 
 interface Stylable {
   className?: string;
@@ -80,6 +80,36 @@ export const FormElements: React.FC<FormElementsProps> = ({
       {children}
       <FormError className="mt-2" error={error} name={name} />
     </div>
+  );
+};
+
+export const FormTextArea: React.FC<FormElementsProps & TextAreaProps> = ({
+  label,
+  helper,
+  error,
+  containerProps,
+  name,
+  ...props
+}) => {
+  return (
+    <FormElements
+      containerProps={containerProps}
+      helper={helper}
+      error={error}
+      label={label}
+      name={name}
+    >
+      <p>
+        <TextArea
+          id={name}
+          name={name}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={`${name}-error`}
+          className="w-full"
+          {...props}
+        />
+      </p>
+    </FormElements>
   );
 };
 
