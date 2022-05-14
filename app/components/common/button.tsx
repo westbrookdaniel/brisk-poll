@@ -14,7 +14,7 @@ const variantStyles = {
   block: {
     blue: `text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800`,
     red: `text-white bg-red-500 hover:bg-red-600 active:bg-red-700`,
-    gray: `text-white bg-gray-900 hover:bg-gray-700 active:bg-gray-500`,
+    gray: `text-gray-900 bg-gray-100 hover:bg-gray-200 active:bg-gray-300`,
   },
   ghost: {
     blue: `bg-transparent text-blue-700 hover:bg-blue-100 active:bg-blue-200`,

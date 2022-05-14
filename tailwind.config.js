@@ -35,6 +35,9 @@ module.exports = {
         ],
         mono: ["Monaco", "Consolas", "Courier New", "Courier", "monospace"],
       },
+      minHeight: ({ theme }) => ({
+        ...theme("maxWidth"),
+      }),
     },
   },
   plugins: [require("@tailwindcss/forms")],

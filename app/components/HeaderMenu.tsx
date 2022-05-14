@@ -45,7 +45,7 @@ export default function HeaderMenu() {
           buttonProps={{
             as: IconButton,
             icon: MenuIcon,
-            colorScheme: "blue",
+            colorScheme: "gray",
             "aria-label": "Menu",
           }}
         />
@@ -65,7 +65,7 @@ export default function HeaderMenu() {
       <LinkButton
         className="hidden lg:block"
         to={`/join?${redirectSearchParams}`}
-        colorScheme="blue"
+        colorScheme="gray"
       >
         Sign Up
       </LinkButton>
@@ -83,7 +83,7 @@ export default function HeaderMenu() {
         buttonProps={{
           as: IconButton,
           icon: MenuIcon,
-          colorScheme: "blue",
+          colorScheme: "gray",
           "aria-label": "Menu",
         }}
         className="block lg:hidden"
